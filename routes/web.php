@@ -2,6 +2,21 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PesertaController;
+use App\Http\Controllers\Admin\SkemaController;
+use App\Http\Controllers\Admin\JadwalController;
+use App\Http\Controllers\Admin\HasilController;
+use App\Http\Controllers\Admin\InformasiController;
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/peserta', [PesertaController::class, 'index'])->name('peserta');
+    Route::get('/skema', [SkemaController::class, 'index'])->name('skema');
+    Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal');
+    Route::get('/hasil', [HasilController::class, 'index'])->name('hasil');
+    Route::get('/informasi', [InformasiController::class, 'index'])->name('informasi');
+});
 
 Route::get('/', function () {
     return view('welcome');
