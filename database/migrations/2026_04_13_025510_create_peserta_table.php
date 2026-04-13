@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('peserta', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama');
+            $table->string('email')->unique();
+            $table->string('no_telepon')->nullable();
+            $table->text('alamat')->nullable();
+            $table->foreignId('skema_id')->constrained('skema')->onDelete('cascade');
+            $table->enum('status', ['Verifikasi', 'Asesmen', 'Kompeten', 'Belum Kompeten', 'Dalam Proses'])->default('Verifikasi');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('peserta');
+    }
+};

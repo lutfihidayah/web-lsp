@@ -16,6 +16,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal');
     Route::get('/hasil', [HasilController::class, 'index'])->name('hasil');
     Route::get('/informasi', [InformasiController::class, 'index'])->name('informasi');
+    Route::get('/peserta/create', [PesertaController::class, 'create'])->name('peserta.create');
+Route::post('/peserta', [PesertaController::class, 'store'])->name('peserta.store');
+Route::delete('/peserta/{id}', [PesertaController::class, 'destroy'])->name('peserta.destroy');
 });
 
 Route::get('/', function () {
