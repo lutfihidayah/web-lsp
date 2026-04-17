@@ -46,6 +46,17 @@
                     @enderror
                 </div>
 
+                <!-- No Telepon -->
+                <div class="mb-5">
+                   <label class="block text-sm font-semibold text-gray-700 mb-2" for="no_telepon">No Telepon</label>
+                   <input type="text" name="no_telepon" value="{{ old('no_telepon') }}" 
+                      placeholder="08xxxxxxxxxx" 
+                      class="w-full px-4 py-3 bg-gray-100 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] text-gray-700">
+                   @error('no_telepon')
+                       <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                   @enderror
+                </div>
+
                 {{-- Email --}}
                 <div class="mb-5">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
