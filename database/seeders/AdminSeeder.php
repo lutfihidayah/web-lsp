@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AdminSeeder extends Seeder
 {
@@ -14,6 +14,8 @@ class AdminSeeder extends Seeder
             'name'     => 'Admin LSP',
             'email'    => 'admin@lsp.com',
             'password' => Hash::make('password123'),
+            'role'     => 'admin',
+            'status'   => 'aktif',
         ]);
     }
 }
