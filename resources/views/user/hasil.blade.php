@@ -45,7 +45,7 @@
 <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
     <h3 class="font-bold text-gray-900 mb-5">Riwayat Hasil Asesmen</h3>
 
-    @if($hasil->isEmpty())
+    @if($asesmens->isEmpty())
         <div class="text-center py-12">
             <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -66,10 +66,9 @@
             <thead>
                 <tr class="border-b border-gray-100 text-gray-400 text-xs">
                     <th class="text-left pb-3 font-medium">Skema</th>
-                    <th class="text-left pb-3 font-medium">Tanggal Asesmen</th>
-                    <th class="text-left pb-3 font-medium">Asesor</th>
-                    <th class="text-left pb-3 font-medium">Nilai</th>
-                    <th class="text-left pb-3 font-medium">Hasil</th>
+                    <th class="text-left pb-3 font-medium">Tanggal</th>
+                    <th class="text-left pb-3 font-medium">Nilai Quiz</th>
+                    <th class="text-left pb-3 font-medium">Status</th>
                     <th class="text-left pb-3 font-medium">No. Sertifikat</th>
                     <th class="text-left pb-3 font-medium">Aksi</th>
                 </tr>
@@ -77,43 +76,47 @@
             <tbody class="divide-y divide-gray-50">
                 @php
                 $colors = [
-                    'Kompeten'       => 'bg-green-100 text-green-700',
-                    'Belum Kompeten' => 'bg-red-100 text-red-700',
-                    'Dalam Proses'   => 'bg-yellow-100 text-yellow-700',
+                    'lulus'        => 'bg-green-100 text-green-700',
+                    'tidak_lulus'  => 'bg-red-100 text-red-700',
+                    'berlangsung'  => 'bg-yellow-100 text-yellow-700',
+                ];
+                $labels = [
+                    'lulus'        => 'Kompeten',
+                    'tidak_lulus'  => 'Belum Kompeten',
+                    'berlangsung'  => 'Dalam Proses',
                 ];
                 @endphp
-                @foreach($hasil as $h)
+                @foreach($asesmens as $a)
                 <tr class="hover:bg-gray-50">
                     <td class="py-3 font-medium text-gray-800">
-                        {{ $h->peserta->skema->nama ?? $h->jadwal->skema->nama ?? '-' }}
+                        {{ $a->pendaftaran->skema->nama ?? '-' }}
                     </td>
                     <td class="py-3 text-gray-500">
-                        {{ \Carbon\Carbon::parse($h->jadwal->tanggal ?? $h->created_at)->format('d M, Y') }}
+                        {{ $a->sertifikat_dibuat_at ? $a->sertifikat_dibuat_at->format('d M, Y') : $a->created_at->format('d M, Y') }}
                     </td>
-                    <td class="py-3 text-gray-500">{{ $h->asesor }}</td>
                     <td class="py-3 text-gray-500">
-                        @if($h->nilai)
-                            <span class="font-semibold text-gray-800">{{ $h->nilai }}</span>
+                        @if($a->nilai_quiz !== null)
+                            <span class="font-semibold text-gray-800">{{ $a->nilai_quiz }}</span>
                             <span class="text-gray-400">/100</span>
                         @else
                             <span class="text-gray-400">-</span>
                         @endif
                     </td>
                     <td class="py-3">
-                        <span class="px-3 py-1 rounded-full text-xs font-medium {{ $colors[$h->hasil] ?? 'bg-gray-100 text-gray-600' }}">
-                            {{ $h->hasil }}
+                        <span class="px-3 py-1 rounded-full text-xs font-medium {{ $colors[$a->status] ?? 'bg-gray-100 text-gray-600' }}">
+                            {{ $labels[$a->status] ?? ucfirst($a->status) }}
                         </span>
                     </td>
                     <td class="py-3 text-gray-500 font-mono text-xs">
-                        @if($h->no_sertifikat)
-                            <span class="text-green-700 font-semibold">{{ $h->no_sertifikat }}</span>
+                        @if($a->no_sertifikat)
+                            <span class="text-green-700 font-semibold">{{ $a->no_sertifikat }}</span>
                         @else
                             <span class="text-gray-400">-</span>
                         @endif
                     </td>
                     <td class="py-3">
-                        @if($h->hasil === 'Kompeten')
-                            <a href="{{ route('user.hasil.sertifikat', $h->id) }}"
+                        @if($a->status === 'lulus')
+                            <a href="{{ route('user.hasil.sertifikat', $a->id) }}"
                                 target="_blank"
                                 class="inline-flex items-center gap-1.5 bg-green-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold hover:bg-green-700 transition">
                                 <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -121,10 +124,11 @@
                                     <polyline points="7 10 12 15 17 10"/>
                                     <line x1="12" y1="15" x2="12" y2="3"/>
                                 </svg>
-                                Download Sertifikat
+                                Lihat Sertifikat
                             </a>
-                        @elseif($h->hasil === 'Dalam Proses')
-                            <span class="text-xs text-yellow-600 font-medium italic">Menunggu hasil...</span>
+                        @elseif($a->status === 'berlangsung')
+                            <a href="{{ route('user.asesmen.show', $a->id) }}"
+                                class="text-xs text-[#1e3a6e] font-medium hover:underline">Lihat Progress</a>
                         @else
                             <span class="text-xs text-gray-400">-</span>
                         @endif

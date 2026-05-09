@@ -41,6 +41,11 @@ class Pendaftaran extends Model
         return $this->belongsTo(Jadwal::class);
     }
 
+    public function asesmen()
+    {
+        return $this->hasOne(Asesmen::class);
+    }
+
     public function isPaid(): bool
     {
         return $this->status === 'paid';

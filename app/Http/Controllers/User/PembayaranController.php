@@ -258,6 +258,29 @@ class PembayaranController extends Controller
                     'status'     => 'Dalam Proses',
                 ]);
             }
+
+            // 4. Auto-create Asesmen + Absensi sesuai durasi skema
+            $skema = $pendaftaran->skema;
+            // Parse durasi: "2-3 Hari" → ambil angka pertama, "5 Hari" → 5
+            preg_match('/(\d+)/', $skema->durasi ?? '1', $matches);
+            $jumlahPertemuan = (int) ($matches[1] ?? 1);
+            if ($jumlahPertemuan < 1) $jumlahPertemuan = 1;
+
+            $asesmen = \App\Models\Asesmen::create([
+                'pendaftaran_id' => $pendaftaran->id,
+                'status' => 'berlangsung',
+            ]);
+
+            // Buat absensi sesuai durasi (per hari)
+            $startDate = $jadwal ? \Carbon\Carbon::parse($jadwal->tanggal) : now()->addDays(7);
+            for ($i = 1; $i <= $jumlahPertemuan; $i++) {
+                \App\Models\Absensi::create([
+                    'asesmen_id' => $asesmen->id,
+                    'pertemuan_ke' => $i,
+                    'tanggal' => $startDate->copy()->addDays($i - 1),
+                    'status' => 'belum',
+                ]);
+            }
         });
     }
 

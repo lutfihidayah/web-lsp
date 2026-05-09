@@ -67,6 +67,15 @@
             Pembayaran
         </a>
 
+        <a href="{{ route('user.asesmen') }}"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
+            {{ request()->routeIs('user.asesmen*') ? 'bg-[#1e3972] text-white' : 'text-blue-100 hover:bg-blue-800' }}">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+            </svg>
+            Asesmen
+        </a>
+
         <a href="{{ route('user.hasil') }}"
             class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
             {{ request()->routeIs('user.hasil') ? 'bg-[#1e3972] text-white' : 'text-blue-100 hover:bg-blue-800' }}">

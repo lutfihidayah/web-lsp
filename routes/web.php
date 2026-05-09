@@ -9,8 +9,10 @@ use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\HasilController;
 use App\Http\Controllers\Admin\InformasiController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\AsesmenAdminController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\PembayaranController;
+use App\Http\Controllers\User\AsesmenController;
 use App\Http\Controllers\MidtransWebhookController;
 
 // Landing page
@@ -84,6 +86,12 @@ Route::middleware(['auth', 'role:admin'])
         Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('users.destroy');
         Route::post('/users/{id}/reset-password', [UserManagementController::class, 'resetPassword'])->name('users.reset-password');
         Route::post('/users/{id}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('users.toggle-status');
+
+        // Asesmen Monitoring
+        Route::get('/asesmen', [AsesmenAdminController::class, 'index'])->name('asesmen');
+        Route::get('/asesmen/{id}', [AsesmenAdminController::class, 'show'])->name('asesmen.show');
+        Route::post('/asesmen/absensi/{id}/konfirmasi', [AsesmenAdminController::class, 'konfirmasiHadir'])->name('asesmen.konfirmasi');
+        Route::post('/asesmen/{id}/konfirmasi-semua', [AsesmenAdminController::class, 'konfirmasiSemua'])->name('asesmen.konfirmasi-semua');
     });
 
 
@@ -109,6 +117,14 @@ Route::middleware(['auth', 'verified', 'role:user'])
         Route::get('/pembayaran/sukses/{pendaftaran}', [PembayaranController::class, 'sukses'])->name('pembayaran.sukses');
         Route::get('/pembayaran/invoice/{pendaftaran}', [PembayaranController::class, 'invoice'])->name('pembayaran.invoice');
         Route::post('/pembayaran/simulate/{pendaftaran}', [PembayaranController::class, 'simulateSuccess'])->name('pembayaran.simulate');
+
+        // Asesmen
+        Route::get('/asesmen', [AsesmenController::class, 'index'])->name('asesmen');
+        Route::get('/asesmen/{id}', [AsesmenController::class, 'show'])->name('asesmen.show');
+        Route::post('/asesmen/hadir/{absensi}', [AsesmenController::class, 'hadir'])->name('asesmen.hadir');
+        Route::get('/asesmen/{id}/quiz', [AsesmenController::class, 'quiz'])->name('asesmen.quiz');
+        Route::post('/asesmen/{id}/quiz/submit', [AsesmenController::class, 'submitQuiz'])->name('asesmen.quiz.submit');
+        Route::get('/asesmen/{id}/sertifikat', [AsesmenController::class, 'sertifikat'])->name('asesmen.sertifikat');
     });
 
 // Profile (semua user yang sudah login)

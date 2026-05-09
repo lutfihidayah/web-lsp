@@ -3,45 +3,39 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Hasil;
-use App\Models\Peserta;
+use App\Models\Asesmen;
 
 class HasilController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $asesmens = Asesmen::whereHas('pendaftaran', function ($q) {
+                $q->where('user_id', auth()->id());
+            })
+            ->whereIn('status', ['lulus', 'tidak_lulus', 'berlangsung'])
+            ->with(['pendaftaran.skema', 'pendaftaran.jadwal'])
+            ->latest()
+            ->get();
 
-        // Ambil hanya peserta yang emailnya sama dengan user login
-        $pesertaIds = Peserta::where('email', $user->email)->pluck('id');
+        $kompeten      = $asesmens->where('status', 'lulus')->count();
+        $belumKompeten = $asesmens->where('status', 'tidak_lulus')->count();
+        $dalamProses   = $asesmens->where('status', 'berlangsung')->count();
 
-        // Hanya tampilkan hasil milik user ini saja
-        $hasil = Hasil::with(['peserta.skema', 'jadwal.skema'])
-                      ->whereIn('peserta_id', $pesertaIds)
-                      ->latest()
-                      ->get();
-
-        $kompeten      = $hasil->where('hasil', 'Kompeten')->count();
-        $belumKompeten = $hasil->where('hasil', 'Belum Kompeten')->count();
-        $dalamProses   = $hasil->where('hasil', 'Dalam Proses')->count();
-
-        return view('user.hasil', compact('hasil', 'kompeten', 'belumKompeten', 'dalamProses'));
+        return view('user.hasil', compact('asesmens', 'kompeten', 'belumKompeten', 'dalamProses'));
     }
 
     /**
-     * Download sertifikat PDF (generate on-the-fly)
+     * Lihat sertifikat
      */
-    public function downloadSertifikat($hasilId)
+    public function downloadSertifikat($asesmenId)
     {
-        $user       = auth()->user();
-        $pesertaIds = Peserta::where('email', $user->email)->pluck('id');
+        $asesmen = Asesmen::whereHas('pendaftaran', function ($q) {
+                $q->where('user_id', auth()->id());
+            })
+            ->with(['pendaftaran.skema', 'pendaftaran.user'])
+            ->where('status', 'lulus')
+            ->findOrFail($asesmenId);
 
-        $hasil = Hasil::with(['peserta.skema', 'jadwal'])
-                      ->whereIn('peserta_id', $pesertaIds)
-                      ->where('id', $hasilId)
-                      ->where('hasil', 'Kompeten')
-                      ->firstOrFail();
-
-        return view('user.sertifikat', compact('hasil'));
+        return view('user.sertifikat', compact('asesmen'));
     }
 }

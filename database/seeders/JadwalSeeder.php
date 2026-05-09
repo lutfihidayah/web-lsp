@@ -15,21 +15,21 @@ class JadwalSeeder extends Seeder
         $jadwals = [
             [
                 'skema_id' => $skemas['Junior Web Developer']->id ?? 1,
-                'tanggal'  => '2026-06-10',
+                'tanggal'  => '2026-07-10',
                 'waktu'    => '08.00 - 16.00',
                 'lokasi'   => 'Ruang A101',
                 'asesor'   => 'Budi Santoso',
                 'kuota'    => 25,
-                'status'   => 'Selesai',
+                'status'   => 'Terjadwal',
             ],
             [
                 'skema_id' => $skemas['Digital Marketing Specialist']->id ?? 2,
-                'tanggal'  => '2026-06-12',
+                'tanggal'  => '2026-07-12',
                 'waktu'    => '09.00 - 15.00',
                 'lokasi'   => 'Ruang B202',
                 'asesor'   => 'Rina Oktavia',
                 'kuota'    => 20,
-                'status'   => 'Selesai',
+                'status'   => 'Terjadwal',
             ],
             [
                 'skema_id' => $skemas['Network Administrator']->id ?? 4,
