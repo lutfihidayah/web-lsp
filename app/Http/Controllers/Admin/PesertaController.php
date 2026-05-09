@@ -32,8 +32,31 @@ class PesertaController extends Controller
         ]);
 
         Peserta::create($request->all());
-
         return redirect()->route('admin.peserta')->with('success', 'Peserta berhasil ditambahkan!');
+    }
+
+    public function edit($id)
+    {
+        $peserta = Peserta::findOrFail($id);
+        $skemas  = Skema::where('status', 'Aktif')->get();
+        return view('admin.peserta-edit', compact('peserta', 'skemas'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $peserta = Peserta::findOrFail($id);
+
+        $request->validate([
+            'nama'       => 'required|string|max:255',
+            'email'      => 'required|email|unique:peserta,email,' . $id,
+            'no_telepon' => 'nullable|string|max:20',
+            'alamat'     => 'nullable|string',
+            'skema_id'   => 'required|exists:skema,id',
+            'status'     => 'required|in:Verifikasi,Asesmen,Kompeten,Belum Kompeten,Dalam Proses',
+        ]);
+
+        $peserta->update($request->all());
+        return redirect()->route('admin.peserta')->with('success', 'Peserta berhasil diperbarui!');
     }
 
     public function destroy($id)

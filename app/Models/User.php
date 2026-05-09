@@ -26,6 +26,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function pendaftaran()
+    {
+        return $this->hasMany(Pendaftaran::class);
+    }
+
     protected function casts(): array
     {
         return [

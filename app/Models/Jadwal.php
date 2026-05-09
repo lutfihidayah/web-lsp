@@ -18,4 +18,14 @@ class Jadwal extends Model
     {
         return $this->hasMany(Hasil::class);
     }
+
+    public function pendaftaran()
+    {
+        return $this->hasMany(Pendaftaran::class);
+    }
+
+    public function peserta_terdaftar()
+    {
+        return $this->hasMany(Pendaftaran::class)->where('status', 'paid');
+    }
 }

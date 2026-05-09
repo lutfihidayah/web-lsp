@@ -76,32 +76,40 @@
         <p class="text-gray-500 mt-2">Kami menyediakan berbagai skema sertifikasi yang telah terakreditasi BNSP</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        @php
-        $skemas = [
-            ['kategori' => 'Teknologi Informasi', 'warna' => 'bg-blue-100 text-blue-700', 'nama' => 'Junior Web Developer', 'desc' => 'Kompetensi dalam membangun website dengan HTML, CSS, dan JavaScript.', 'hari' => '2-3', 'peserta' => '134', 'unit' => '8'],
-            ['kategori' => 'Pemasaran Digital', 'warna' => 'bg-green-100 text-green-700', 'nama' => 'Digital Marketing Specialist', 'desc' => 'Strategi pemasaran digital, SEO, dan manajemen media sosial.', 'hari' => '2', 'peserta' => '169', 'unit' => '6'],
-            ['kategori' => 'Administrasi', 'warna' => 'bg-yellow-100 text-yellow-700', 'nama' => 'Administrasi Perkantoran', 'desc' => 'Kompetensi administrasi perkantoran secara profesional.', 'hari' => '5', 'peserta' => '456', 'unit' => '10'],
-            ['kategori' => 'Teknologi Informasi', 'warna' => 'bg-blue-100 text-blue-700', 'nama' => 'Network Administrator', 'desc' => 'Pengelolaan dan pemeliharaan infrastruktur jaringan komputer.', 'hari' => '3', 'peserta' => '161', 'unit' => '12'],
-            ['kategori' => 'Desain', 'warna' => 'bg-red-100 text-red-700', 'nama' => 'Graphic Designer', 'desc' => 'Desain grafis, branding, dan pembuatan konten visual.', 'hari' => '2', 'peserta' => '298', 'unit' => '7'],
-            ['kategori' => 'Teknologi Informasi', 'warna' => 'bg-blue-100 text-blue-700', 'nama' => 'Data Analyst', 'desc' => 'Analisis data, visualisasi, dan pengambilan keputusan berbasis data.', 'hari' => '3', 'peserta' => '145', 'unit' => '10'],
-        ];
-        @endphp
-
-        @foreach($skemas as $skema)
-        <div class="border border-gray-200 rounded-xl p-6 hover:shadow-md transition">
-            <span class="px-3 py-1 rounded-full text-xs font-medium {{ $skema['warna'] }}">{{ $skema['kategori'] }}</span>
-            <h3 class="font-bold text-lg mt-3 mb-2">{{ $skema['nama'] }}</h3>
-            <p class="text-gray-500 text-sm mb-4">{{ $skema['desc'] }}</p>
-            <div class="flex items-center gap-4 text-xs text-gray-400 mb-4">
-                <span>⏱ {{ $skema['hari'] }} Hari</span>
-                <span>👥 {{ $skema['peserta'] }} Peserta</span>
-                <span>📋 {{ $skema['unit'] }} Unit</span>
+        @if($skemas->isEmpty())
+            <div class="col-span-3 text-center py-10">
+                <p class="text-gray-500">Belum ada skema sertifikasi yang tersedia saat ini.</p>
             </div>
-            <a href="#" class="block text-center border border-[#1e3a6e] text-[#1e3a6e] rounded-lg py-2 text-sm font-medium hover:bg-[#1e3a6e] hover:text-white transition">
-                Lihat Detail
-            </a>
-        </div>
-        @endforeach
+        @else
+            @foreach($skemas as $skema)
+            <div class="border border-gray-200 rounded-xl p-6 hover:shadow-md transition">
+                <span class="px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-blue-100 text-blue-700">
+                    {{ $skema->kategori }}
+                </span>
+                <h3 class="font-bold text-lg mt-3 mb-2">{{ $skema->nama }}</h3>
+                <p class="text-gray-500 text-sm mb-4 line-clamp-2">{{ $skema->deskripsi ?? 'Skema sertifikasi profesional untuk bidang ' . $skema->kategori }}</p>
+                
+                <div class="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-5">
+                    <span class="flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        {{ $skema->durasi ?? '1-2 Hari' }}
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        {{ $skema->unit_kompetensi ?? 0 }} Unit
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Rp {{ number_format($skema->harga ?? 0, 0, ',', '.') }}
+                    </span>
+                </div>
+
+                <a href="{{ url('/sertifikasi/' . $skema->id) }}" class="block text-center border border-[#1e3a6e] text-[#1e3a6e] rounded-lg py-2 text-sm font-medium hover:bg-[#1e3a6e] hover:text-white transition">
+                    Lihat Detail
+                </a>
+            </div>
+            @endforeach
+        @endif
     </div>
     <div class="text-center mt-10">
         <a href="#" class="px-8 py-3 bg-[#1e3a6e] text-white rounded-lg font-medium hover:bg-[#16305c] transition">Lihat Semua Skema</a>
@@ -144,26 +152,32 @@
         <p class="text-gray-500 mt-2">Dapatkan informasi terkini seputar kegiatan dan pengumuman dari LSP kami.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        @php
-        $infos = [
-            ['tanggal' => '5 Desember 2025', 'judul' => 'Pembukaan Pendaftaran Sertifikasi Batch Januari 2026', 'desc' => 'LSP Profesional membuka pendaftaran untuk sertifikasi batch Januari 2026.'],
-            ['tanggal' => '28 November 2025', 'judul' => 'Kerjasama dengan Industri untuk Peningkatan Kompetensi', 'desc' => 'LSP menjalin kerjasama strategis dengan berbagai perusahaan teknologi.'],
-            ['tanggal' => '10 November 2025', 'judul' => 'Tips Sukses Menghadapi Uji Kompetensi', 'desc' => 'Panduan lengkap persiapan menghadapi uji kompetensi dari para asesor.'],
-        ];
-        @endphp
-        @foreach($infos as $info)
-        <div class="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition">
-            <div class="bg-gray-200 h-48 flex items-center justify-center">
-                <span class="text-gray-400 text-sm">Foto Berita</span>
+        @if($informasi->isEmpty())
+            <div class="col-span-3 text-center py-10">
+                <p class="text-gray-500">Belum ada informasi terbaru saat ini.</p>
             </div>
-            <div class="p-5">
-                <p class="text-xs text-gray-400 mb-2">{{ $info['tanggal'] }}</p>
-                <h3 class="font-bold text-base mb-2">{{ $info['judul'] }}</h3>
-                <p class="text-gray-500 text-sm mb-4">{{ $info['desc'] }}</p>
-                <a href="#" class="text-[#1e3a6e] text-sm font-medium">Baca Selengkapnya →</a>
+        @else
+            @foreach($informasi as $info)
+            <div class="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition">
+                <div class="bg-gray-200 h-48 flex items-center justify-center bg-gradient-to-br from-[#1e3a6e] to-blue-500 text-white">
+                    <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15"></path>
+                    </svg>
+                </div>
+                <div class="p-5">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">
+                            {{ $info->kategori }}
+                        </span>
+                        <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($info->created_at)->format('d M Y') }}</p>
+                    </div>
+                    <h3 class="font-bold text-base mb-2 line-clamp-2">{{ $info->judul }}</h3>
+                    <p class="text-gray-500 text-sm mb-4 line-clamp-3">{{ $info->isi }}</p>
+                    <a href="#" class="text-[#1e3a6e] text-sm font-medium hover:underline">Baca Selengkapnya →</a>
+                </div>
             </div>
-        </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
     <div class="text-center mt-10">
         <a href="#" class="px-8 py-3 bg-[#1e3a6e] text-white rounded-lg font-medium hover:bg-[#16305c] transition">Lihat Semua Berita</a>
