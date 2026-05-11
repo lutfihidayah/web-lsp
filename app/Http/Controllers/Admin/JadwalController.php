@@ -12,7 +12,8 @@ class JadwalController extends Controller
     public function index()
     {
         $jadwals = Jadwal::with('skema')->latest('tanggal')->get();
-        return view('admin.jadwal', compact('jadwals'));
+        $skemas = Skema::where('status', 'Aktif')->get();
+        return view('admin.jadwal', compact('jadwals', 'skemas'));
     }
 
     public function create()

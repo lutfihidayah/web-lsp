@@ -10,13 +10,12 @@
         <h2 class="text-xl font-bold text-gray-900">User Management</h2>
         <p class="text-sm text-gray-500 mt-1">Kelola semua akun pengguna dan administrator</p>
     </div>
-    <a href="{{ route('admin.users.create') }}"
-        class="flex items-center gap-2 bg-[#1e3a6e] text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#16305c] transition">
+    <button onclick="openModal('createModal')" class="flex items-center gap-2 bg-[#1e3a6e] text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#16305c] transition">
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
         Tambah Akun
-    </a>
+    </button>
 </div>
 
 {{-- Flash Messages --}}
@@ -216,7 +215,108 @@
     </div>
 </div>
 
+{{-- MODAL TAMBAH AKUN --}}
+<div id="createModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+            <div>
+                <h2 class="font-bold text-gray-800 text-lg">Tambah Akun</h2>
+                <p class="text-sm text-gray-400 mt-1">Buat akun baru untuk user atau admin</p>
+            </div>
+            <button onclick="closeModal('createModal')" class="text-gray-400 hover:text-gray-600">
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="p-6">
+            @if($errors->any())
+            <div class="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 mb-6">
+                <ul class="list-disc list-inside space-y-1">
+                    @foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach
+                </ul>
+            </div>
+            @endif
+
+            <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-5">
+                @csrf
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama Lengkap <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" value="{{ old('name') }}" required
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]"
+                            placeholder="Nama lengkap">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" value="{{ old('email') }}" required
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]"
+                            placeholder="contoh@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">No. Telepon</label>
+                        <input type="text" name="no_telepon" value="{{ old('no_telepon') }}"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]"
+                            placeholder="08xx-xxxx-xxxx">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Role <span class="text-red-500">*</span></label>
+                        <select name="role" required
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] text-gray-700">
+                            <option value="user" {{ old('role') === 'user' ? 'selected' : '' }}>User (Peserta)</option>
+                            <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Status <span class="text-red-500">*</span></label>
+                        <select name="status" required
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] text-gray-700">
+                            <option value="aktif" {{ old('status', 'aktif') === 'aktif' ? 'selected' : '' }}>Aktif</option>
+                            <option value="nonaktif" {{ old('status') === 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Password <span class="text-red-500">*</span></label>
+                        <input type="password" name="password" required minlength="8"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]"
+                            placeholder="Minimal 8 karakter">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Konfirmasi Password <span class="text-red-500">*</span></label>
+                        <input type="password" name="password_confirmation" required minlength="8"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]"
+                            placeholder="Ulangi password">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeModal('createModal')" class="px-6 py-2.5 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 bg-[#1e3a6e] text-white text-sm font-medium rounded-lg hover:bg-[#16305c] transition">
+                        Simpan Akun
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
+@if($errors->any())
+    document.addEventListener("DOMContentLoaded", function() {
+        openModal('createModal');
+    });
+@endif
+
+function openModal(id) {
+    document.getElementById(id).classList.remove('hidden');
+    document.getElementById(id).classList.add('flex');
+}
+function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+    document.getElementById(id).classList.remove('flex');
+}
 function openReset(userId, userName) {
     document.getElementById('reset-name').textContent = userName;
     document.getElementById('reset-form').action = `/admin/users/${userId}/reset-password`;

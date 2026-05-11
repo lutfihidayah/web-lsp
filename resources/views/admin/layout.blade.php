@@ -4,8 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard') - LSP Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        @media print {
+            aside, header { display: none !important; }
+            .ml-64 { margin-left: 0 !important; }
+            main { padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
+            .no-print { display: none !important; }
+            body, .bg-gray-100 { background-color: white !important; }
+            .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; }
+            * { -webkit-print-color-adjust: exact !important; color-adjust: exact !important; }
+        }
+    </style>
 </head>
 <body class="bg-gray-100 flex">
 
@@ -158,5 +173,42 @@
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    function exportExcel(filename) {
+        let table = document.querySelector('table');
+        if(!table) {
+            alert("Tidak ada tabel untuk diexport");
+            return;
+        }
+        
+        let clone = table.cloneNode(true);
+        let noPrintEls = clone.querySelectorAll('.no-print');
+        noPrintEls.forEach(el => el.remove());
+
+        let wb = XLSX.utils.table_to_book(clone, {sheet:"Data"});
+        XLSX.writeFile(wb, filename + ".xlsx");
+    }
+
+    function exportPDF() {
+        window.print();
+    }
+
+    function openModal(id) {
+        let modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+    }
+
+    function closeModal(id) {
+        let modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    }
+</script>
 </body>
 </html>

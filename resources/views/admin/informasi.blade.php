@@ -13,9 +13,29 @@
             <h2 class="font-bold text-gray-800 text-lg">Manajemen Informasi & Berita</h2>
             <p class="text-sm text-gray-400">Total {{ $informasi->count() }} artikel</p>
         </div>
-        <a href="{{ route('admin.informasi.create') }}" class="px-4 py-2 bg-[#1e3a6e] text-white text-sm font-medium rounded-lg hover:bg-[#16305c] transition">
-            + Tambah Informasi
-        </a>
+        <div class="flex items-center gap-2 no-print">
+            <div class="relative group">
+                <button type="button" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export
+                </button>
+                <div class="absolute right-0 top-full mt-1 w-36 bg-white border border-gray-100 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                    <button type="button" onclick="exportPDF()" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg flex items-center gap-2">
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        Export PDF
+                    </button>
+                    <button type="button" onclick="exportExcel('Laporan_Informasi')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg flex items-center gap-2">
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="17"/><line x1="16" y1="13" x2="8" y2="17"/></svg>
+                        Export Excel
+                    </button>
+                </div>
+            </div>
+            <button onclick="openModal('createModal')" class="px-4 py-2 bg-[#1e3a6e] text-white text-sm font-medium rounded-lg hover:bg-[#16305c] transition">
+                + Tambah Informasi
+            </button>
+        </div>
     </div>
 
     @if(session('success'))
@@ -36,7 +56,7 @@
                     <th class="text-left pb-3 font-medium">Tanggal</th>
                     <th class="text-left pb-3 font-medium">Dilihat</th>
                     <th class="text-left pb-3 font-medium">Status</th>
-                    <th class="text-left pb-3 font-medium">Aksi</th>
+                    <th class="text-left pb-3 font-medium no-print">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
@@ -72,7 +92,7 @@
                             {{ $i->status }}
                         </span>
                     </td>
-                    <td class="py-3">
+                    <td class="py-3 no-print">
                         <div class="flex items-center gap-2">
                             <a href="{{ route('admin.informasi.edit', $i->id) }}" class="p-1.5 hover:bg-yellow-50 rounded-lg text-yellow-600" title="Edit">
                                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -104,5 +124,90 @@
     </div>
 
 </div>
+
+{{-- MODAL TAMBAH INFORMASI --}}
+<div id="createModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+            <div>
+                <h2 class="font-bold text-gray-800 text-lg">Tambah Informasi / Berita</h2>
+                <p class="text-sm text-gray-400 mt-1">Isi formulir untuk menambahkan informasi baru</p>
+            </div>
+            <button onclick="closeModal('createModal')" class="text-gray-400 hover:text-gray-600">
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="p-6">
+            @if($errors->any())
+            <div class="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 mb-6">
+                <ul class="list-disc list-inside space-y-1">
+                    @foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach
+                </ul>
+            </div>
+            @endif
+
+            <form action="{{ route('admin.informasi.store') }}" method="POST" class="space-y-5">
+                @csrf
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Judul <span class="text-red-500">*</span></label>
+                    <input type="text" name="judul" value="{{ old('judul') }}" required
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]"
+                        placeholder="Judul informasi atau berita">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Kategori <span class="text-red-500">*</span></label>
+                        <select name="kategori" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] text-gray-700">
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach(['Pengumuman','Berita','Tips','Kerjasama'] as $kat)
+                            <option value="{{ $kat }}" {{ old('kategori') == $kat ? 'selected' : '' }}>{{ $kat }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Penulis</label>
+                        <input type="text" name="penulis" value="{{ old('penulis', 'Admin LSP') }}"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Isi Konten <span class="text-red-500">*</span></label>
+                    <textarea name="isi" rows="6" required
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]"
+                        placeholder="Tulis konten informasi di sini...">{{ old('isi') }}</textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Status <span class="text-red-500">*</span></label>
+                    <select name="status" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] text-gray-700">
+                        <option value="Draft" {{ old('status') == 'Draft' ? 'selected' : '' }}>Draft</option>
+                        <option value="Dipublikasikan" {{ old('status') == 'Dipublikasikan' ? 'selected' : '' }}>Dipublikasikan</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeModal('createModal')" class="px-6 py-2.5 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 bg-[#1e3a6e] text-white text-sm font-medium rounded-lg hover:bg-[#16305c] transition">
+                        Simpan Informasi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if($errors->any())
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        openModal('createModal');
+    });
+</script>
+@endif
 
 @endsection

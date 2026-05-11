@@ -9,7 +9,7 @@
 @endif
 
 {{-- Stats --}}
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 no-print">
     <div class="bg-blue-50 border border-blue-100 rounded-xl p-5">
         <p class="text-xs text-blue-600 font-medium">Berlangsung</p>
         <p class="text-2xl font-bold text-gray-900 mt-1">{{ $totalBerlangsung }}</p>
@@ -26,19 +26,39 @@
 
 {{-- Filter --}}
 <div class="bg-white rounded-xl border border-gray-200 p-6">
-    <form method="GET" class="flex items-center gap-4 mb-6">
-        <div class="relative flex-1 max-w-sm">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama peserta..."
-                class="w-full pl-9 pr-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]">
-            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <div class="flex items-center justify-between mb-6 no-print">
+        <form method="GET" class="flex items-center gap-4">
+            <div class="relative flex-1 max-w-sm">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama peserta..."
+                    class="w-full pl-9 pr-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]">
+                <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <select name="status" class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600" onchange="this.form.submit()">
+                <option value="">Semua Status</option>
+                <option value="berlangsung" {{ request('status') == 'berlangsung' ? 'selected' : '' }}>Berlangsung</option>
+                <option value="lulus" {{ request('status') == 'lulus' ? 'selected' : '' }}>Lulus</option>
+                <option value="tidak_lulus" {{ request('status') == 'tidak_lulus' ? 'selected' : '' }}>Tidak Lulus</option>
+            </select>
+        </form>
+        <div class="relative group">
+            <button type="button" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Export
+            </button>
+            <div class="absolute right-0 top-full mt-1 w-36 bg-white border border-gray-100 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <button type="button" onclick="exportPDF()" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg flex items-center gap-2">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Export PDF
+                </button>
+                <button type="button" onclick="exportExcel('Laporan_Asesmen')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg flex items-center gap-2">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="17"/><line x1="16" y1="13" x2="8" y2="17"/></svg>
+                    Export Excel
+                </button>
+            </div>
         </div>
-        <select name="status" class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600" onchange="this.form.submit()">
-            <option value="">Semua Status</option>
-            <option value="berlangsung" {{ request('status') == 'berlangsung' ? 'selected' : '' }}>Berlangsung</option>
-            <option value="lulus" {{ request('status') == 'lulus' ? 'selected' : '' }}>Lulus</option>
-            <option value="tidak_lulus" {{ request('status') == 'tidak_lulus' ? 'selected' : '' }}>Tidak Lulus</option>
-        </select>
-    </form>
+    </div>
 
     {{-- Table --}}
     <div class="overflow-x-auto">
@@ -51,7 +71,7 @@
                     <th class="text-left pb-3 font-medium">Absensi</th>
                     <th class="text-left pb-3 font-medium">Quiz</th>
                     <th class="text-left pb-3 font-medium">Status</th>
-                    <th class="text-left pb-3 font-medium">Aksi</th>
+                    <th class="text-left pb-3 font-medium no-print">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
@@ -93,7 +113,7 @@
                             {{ ucfirst(str_replace('_', ' ', $a->status)) }}
                         </span>
                     </td>
-                    <td class="py-3">
+                    <td class="py-3 no-print">
                         <a href="{{ route('admin.asesmen.show', $a->id) }}" class="px-3 py-1.5 bg-[#1e3a6e] text-white text-xs rounded-lg hover:bg-[#16305c] transition">
                             Detail
                         </a>
@@ -106,7 +126,7 @@
         </table>
     </div>
 
-    <div class="mt-4">{{ $asesmens->links() }}</div>
+    <div class="mt-4 no-print">{{ $asesmens->links() }}</div>
 </div>
 
 @endsection

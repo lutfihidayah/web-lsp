@@ -11,7 +11,8 @@ class PesertaController extends Controller
     public function index()
     {
         $peserta = Peserta::with('skema')->latest()->get();
-        return view('admin.peserta', compact('peserta'));
+        $skemas = Skema::where('status', 'Aktif')->get();
+        return view('admin.peserta', compact('peserta', 'skemas'));
     }
 
     public function create()
