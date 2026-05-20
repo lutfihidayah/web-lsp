@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             JadwalSeeder::class,
             HasilSeeder::class,
             InformasiSeeder::class,
+            //PendaftaranSeeder::class,
         ]);
     }
 }

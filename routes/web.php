@@ -22,11 +22,23 @@ Route::get('/', function () {
     return view('welcome', compact('informasi', 'skemas'));
 });
 
+// Daftar Skema Publik
+Route::get('/sertifikasi', function () {
+    $skemas = \App\Models\Skema::latest()->get();
+    return view('skema-list', compact('skemas'));
+})->name('guest.skema.index');
+
 // Detail Skema Publik
 Route::get('/sertifikasi/{id}', function ($id) {
     $skema = \App\Models\Skema::findOrFail($id);
     return view('skema-detail', compact('skema'));
 })->name('guest.skema.show');
+
+// Daftar Informasi Publik
+Route::get('/informasi', function () {
+    $informasi = \App\Models\Informasi::where('status', 'Dipublikasikan')->latest()->get();
+    return view('informasi-list', compact('informasi'));
+})->name('guest.informasi.index');
 
 // =====================
 // ADMIN ROUTES

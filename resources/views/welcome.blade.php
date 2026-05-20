@@ -39,8 +39,15 @@
         <a href="#kontak" class="hover:text-[#1e3a6e]">Kontak</a>
     </div>
     <div class="flex items-center gap-3">
-        <a href="{{ route('login') }}" class="px-5 py-2 border border-[#1e3a6e] text-[#1e3a6e] rounded-lg text-sm font-medium hover:bg-gray-50">Masuk</a>
-        <a href="{{ route('register') }}" class="px-5 py-2 bg-[#1e3a6e] text-white rounded-lg text-sm font-medium hover:bg-[#16305c]">Daftar</a>
+        @auth
+            <span class="text-sm text-gray-600 hidden sm:inline">Halo, <span class="font-bold text-[#1e3a6e]">{{ auth()->user()->name }}</span></span>
+            <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('user.dashboard') }}" class="px-5 py-2 bg-[#1e3a6e] text-white rounded-lg text-sm font-medium hover:bg-[#16305c] transition-all">
+                Dashboard
+            </a>
+        @else
+            <a href="{{ route('login') }}" class="px-5 py-2 border border-[#1e3a6e] text-[#1e3a6e] rounded-lg text-sm font-medium hover:bg-gray-50">Masuk</a>
+            <a href="{{ route('register') }}" class="px-5 py-2 bg-[#1e3a6e] text-white rounded-lg text-sm font-medium hover:bg-[#16305c]">Daftar</a>
+        @endauth
     </div>
 </nav>
 
@@ -63,9 +70,15 @@
             Tingkatkan nilai tawar dan kredibilitas profesional Anda dengan sertifikasi yang diakui secara nasional. Proses mudah, transparan, dan terpercaya.
         </p>
         <div class="flex flex-col sm:flex-row items-center gap-4">
-            <a href="{{ route('register') }}" class="w-full sm:w-auto px-10 py-4 bg-[#1e3a6e] text-white font-bold rounded-xl hover:bg-[#16305c] shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-1 text-center">
-                Daftar Sertifikasi
-            </a>
+            @auth
+                <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('user.dashboard') }}" class="w-full sm:w-auto px-10 py-4 bg-[#1e3a6e] text-white font-bold rounded-xl hover:bg-[#16305c] shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-1 text-center">
+                    Buka Dashboard
+                </a>
+            @else
+                <a href="{{ route('register') }}" class="w-full sm:w-auto px-10 py-4 bg-[#1e3a6e] text-white font-bold rounded-xl hover:bg-[#16305c] shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-1 text-center">
+                    Daftar Sertifikasi
+                </a>
+            @endauth
             <a href="#skema" class="w-full sm:w-auto px-10 py-4 bg-white text-[#1e3a6e] font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all text-center">
                 Lihat Skema
             </a>
@@ -165,7 +178,7 @@
         @endif
     </div>
     <div class="text-center mt-10">
-        <a href="#" class="px-8 py-3 bg-[#1e3a6e] text-white rounded-lg font-medium hover:bg-[#16305c] transition">Lihat Semua Skema</a>
+        <a href="{{ route('guest.skema.index') }}" class="px-8 py-3 bg-[#1e3a6e] text-white rounded-lg font-medium hover:bg-[#16305c] transition">Lihat Semua Skema</a>
     </div>
 </section>
 
@@ -268,7 +281,7 @@
         @endif
     </div>
     <div class="text-center mt-10">
-        <a href="#" class="px-8 py-3 bg-[#1e3a6e] text-white rounded-lg font-medium hover:bg-[#16305c] transition">Lihat Semua Berita</a>
+        <a href="{{ route('guest.informasi.index') }}" class="px-8 py-3 bg-[#1e3a6e] text-white rounded-lg font-medium hover:bg-[#16305c] transition">Lihat Semua Berita</a>
     </div>
 </section>
 
