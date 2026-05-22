@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Peserta;
+use App\Models\User;
 
 class PesertaSeeder extends Seeder
 {
@@ -21,7 +22,23 @@ class PesertaSeeder extends Seeder
         ];
 
         foreach ($peserta as $p) {
-            Peserta::create($p);
+            $user = User::firstOrCreate(
+                ['email' => $p['email']],
+                [
+                    'name' => $p['nama'],
+                    'password' => bcrypt('password'),
+                    'role' => 'user',
+                    'status' => 'aktif',
+                    'no_telepon' => $p['no_telepon'] ?? '-',
+                ]
+            );
+
+            Peserta::create([
+                'user_id'  => $user->id,
+                'alamat'   => $p['alamat'],
+                'skema_id' => $p['skema_id'],
+                'status'   => $p['status'],
+            ]);
         }
     }
 }

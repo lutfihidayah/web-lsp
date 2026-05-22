@@ -1,0 +1,307 @@
+@extends('layouts.app')
+
+@section('title', 'Dashboard')
+@section('page-title', 'Dashboard')
+
+@section('content')
+
+@if(auth()->user()->role === 'admin')
+{{-- ===================== DASHBOARD ADMIN ===================== --}}
+
+{{-- STAT CARDS --}}
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-[#1e3a6e] text-white rounded-xl p-6">
+        <div class="w-10 h-10 bg-blue-800 rounded-full flex items-center justify-center mb-4">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+        </div>
+        <p class="text-blue-200 text-sm">Total Peserta</p>
+        <p class="text-3xl font-bold mt-1">{{ number_format($totalPeserta) }}</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-6 border border-gray-200">
+        <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#1e3a6e" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+        </div>
+        <p class="text-gray-400 text-sm">Peserta Aktif</p>
+        <p class="text-3xl font-bold text-gray-800 mt-1">{{ number_format($pesertaAktif) }}</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-6 border border-gray-200">
+        <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#1e3a6e" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+            </svg>
+        </div>
+        <p class="text-gray-400 text-sm">Skema Aktif</p>
+        <p class="text-3xl font-bold text-gray-800 mt-1">{{ $skemaAktif }}</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-6 border border-gray-200">
+        <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#1e3a6e" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+        </div>
+        <p class="text-gray-400 text-sm">Jadwal Bulan ini</p>
+        <p class="text-3xl font-bold text-gray-800 mt-1">{{ $jadwalBulanIni }}</p>
+    </div>
+</div>
+
+{{-- CHARTS --}}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="md:col-span-2 bg-white rounded-xl p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-gray-800">Trend Pendaftaran Peserta</h3>
+            <span class="text-xs text-gray-400">6 Bulan Terakhir</span>
+        </div>
+        <canvas id="trendChart" height="100"></canvas>
+    </div>
+
+    <div class="bg-white rounded-xl p-6 border border-gray-200">
+        <h3 class="font-bold text-gray-800 mb-4">Status Kompetensi</h3>
+        <canvas id="statusChart" height="200"></canvas>
+        <div class="space-y-2 mt-4">
+            <div class="flex items-center gap-2 text-sm">
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                <span class="text-gray-600">{{ $statusKompeten }} Kompeten</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <span class="text-gray-600">{{ $statusBelumKompeten }} Belum Kompeten</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                <span class="text-gray-600">{{ $statusDalamProses }} Dalam Proses</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- BOTTOM --}}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white rounded-xl p-6 border border-gray-200">
+        <h3 class="font-bold text-gray-800 mb-4">Berita & Informasi Terbaru</h3>
+        <div class="space-y-3">
+            @forelse($informasiTerbaru as $info)
+            <div class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                <div class="w-10 h-10 bg-[#1e3a6e] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-800 truncate">{{ $info->judul }}</p>
+                    <p class="text-xs text-gray-400">{{ $info->kategori }} · {{ $info->created_at->diffForHumans() }}</p>
+                </div>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </div>
+            @empty
+            <p class="text-sm text-gray-400 text-center py-4">Belum ada informasi</p>
+            @endforelse
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-gray-800">Daftar Peserta Terbaru</h3>
+            <a href="{{ route('peserta.index') }}" class="text-xs text-[#1e3a6e] font-medium">See All →</a>
+        </div>
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="text-gray-400 text-xs border-b border-gray-100">
+                    <th class="text-left pb-3">Nama</th>
+                    <th class="text-left pb-3">Skema</th>
+                    <th class="text-left pb-3">Status</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+                @php
+                $colors = [
+                    'Verifikasi'     => 'bg-yellow-100 text-yellow-700',
+                    'Asesmen'        => 'bg-blue-100 text-blue-700',
+                    'Kompeten'       => 'bg-green-100 text-green-700',
+                    'Belum Kompeten' => 'bg-red-100 text-red-700',
+                    'Dalam Proses'   => 'bg-orange-100 text-orange-700',
+                ];
+                @endphp
+                @forelse($pesertaTerbaru as $p)
+                <tr>
+                    <td class="py-3 font-medium text-gray-800">{{ $p->nama }}</td>
+                    <td class="py-3 text-gray-500 text-xs">{{ $p->skema->nama ?? '-' }}</td>
+                    <td class="py-3">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium {{ $colors[$p->status] ?? 'bg-gray-100 text-gray-600' }}">
+                            {{ $p->status }}
+                        </span>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3" class="py-4 text-center text-gray-400 text-sm">Belum ada peserta</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+        labels: {!! json_encode($trendLabels) !!},
+        datasets: [{
+            data: {!! json_encode($trendData) !!},
+            borderColor: '#1e3a6e',
+            backgroundColor: 'rgba(30,58,110,0.05)',
+            tension: 0.4,
+            fill: true,
+            pointBackgroundColor: '#1e3a6e',
+            pointRadius: 4,
+        }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { grid: { display: false } } } }
+});
+
+new Chart(document.getElementById('statusChart'), {
+    type: 'doughnut',
+    data: {
+        datasets: [{
+            data: [{{ $statusKompeten }}, {{ $statusBelumKompeten }}, {{ $statusDalamProses }}],
+            backgroundColor: ['#22c55e','#ef4444','#facc15'],
+            borderWidth: 0,
+        }]
+    },
+    options: { plugins: { legend: { display: false } }, cutout: '70%' }
+});
+</script>
+
+@else
+{{-- ===================== DASHBOARD USER ===================== --}}
+
+@if($informasi->isNotEmpty())
+<div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-start gap-3 shadow-sm">
+    <div class="bg-blue-100 p-2 rounded-lg mt-0.5">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#1e3a6e" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+        </svg>
+    </div>
+    <div>
+        <div class="flex items-center gap-2 mb-1">
+            <span class="text-xs font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">Pengumuman Terbaru</span>
+            <span class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($informasi->first()->created_at)->diffForHumans() }}</span>
+        </div>
+        <h4 class="font-bold text-gray-900 text-sm">{{ $informasi->first()->judul }}</h4>
+        <p class="text-xs text-gray-600 mt-1 line-clamp-1">{{ $informasi->first()->isi }}</p>
+    </div>
+</div>
+@endif
+
+<div class="bg-white rounded-2xl p-6 mb-6 flex items-center justify-between shadow-sm border border-gray-100">
+    <div>
+        <h2 class="text-2xl font-bold text-gray-900">Hallo, {{ auth()->user()->name }}!</h2>
+        <p class="text-gray-500 text-sm mt-1">Selamat datang kembali di Dashboard Sertifikasi.</p>
+    </div>
+    <div class="flex items-center gap-4">
+        <div class="bg-[#1e3a6e] text-white rounded-xl px-5 py-4 text-center min-w-[140px]">
+            <p class="text-xs font-semibold text-blue-200 leading-tight">Skema Sedang<br>di Ikuti</p>
+            <p class="text-2xl font-bold mt-2">{{ $skemaCount }}</p>
+        </div>
+        <div class="bg-[#1e3a6e] text-white rounded-xl px-5 py-4 text-center min-w-[140px]">
+            <p class="text-xs font-semibold text-blue-200 leading-tight">Sertifikat<br>Kompeten</p>
+            <p class="text-2xl font-bold mt-2">{{ $kompeten }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+        <div class="w-11 h-11 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#2563EB" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            </svg>
+        </div>
+        <p class="text-2xl font-bold text-gray-900">{{ $skemaCount }}</p>
+        <p class="text-sm text-gray-500 mt-0.5">Skema Diikuti</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+        <div class="w-11 h-11 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#16A34A" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+        </div>
+        <p class="text-2xl font-bold text-gray-900">{{ $kompeten }}</p>
+        <p class="text-sm text-gray-500 mt-0.5">Kompeten</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+        <div class="w-11 h-11 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#EA580C" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+        </div>
+        <p class="text-2xl font-bold text-gray-900">{{ $jadwalCount }}</p>
+        <p class="text-sm text-gray-500 mt-0.5">Jadwal Mendatang</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+        <div class="w-11 h-11 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#9333EA" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+            </svg>
+        </div>
+        <p class="text-2xl font-bold text-gray-900">{{ $totalSertifikat }}</p>
+        <p class="text-sm text-gray-500 mt-0.5">Total Sertifikat</p>
+    </div>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+    <h3 class="text-lg font-bold text-gray-900 mb-5">Berita & Informasi Terbaru</h3>
+    @if($informasi->isEmpty())
+        <p class="text-sm text-gray-400 text-center py-4">Belum ada informasi yang dipublikasikan</p>
+    @else
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        @php
+        $gradients = ['from-blue-500 to-blue-700', 'from-indigo-500 to-purple-600', 'from-purple-500 to-pink-500'];
+        $badgeColors = [
+            'Pengumuman' => 'bg-green-100 text-green-700',
+            'Berita'     => 'bg-blue-100 text-blue-700',
+            'Tips'       => 'bg-purple-100 text-purple-700',
+            'Kerjasama'  => 'bg-orange-100 text-orange-700',
+        ];
+        @endphp
+        @foreach($informasi as $idx => $info)
+        <div class="border border-gray-100 rounded-xl overflow-hidden hover:shadow-md transition cursor-pointer">
+            <div class="bg-gradient-to-br {{ $gradients[$idx % 3] }} h-36 flex items-center justify-center">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="1.5">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                </svg>
+            </div>
+            <div class="p-4">
+                <span class="inline-block {{ $badgeColors[$info->kategori] ?? 'bg-gray-100 text-gray-700' }} text-xs font-semibold px-3 py-1 rounded-full mb-2">
+                    {{ $info->kategori }}
+                </span>
+                <h4 class="font-bold text-sm text-gray-900 mb-1 line-clamp-2">{{ $info->judul }}</h4>
+                <p class="text-xs text-gray-500 line-clamp-2">{{ $info->isi }}</p>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    @endif
+</div>
+
+@endif
+
+@endsection

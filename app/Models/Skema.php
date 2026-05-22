@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Skema extends Model
 {
     protected $table = 'skema';
-    protected $fillable = ['nama', 'kategori', 'durasi', 'unit_kompetensi', 'status', 'deskripsi', 'harga'];
+    protected $fillable = ['nama', 'kategori', 'durasi', 'unit_kompetensi', 'status', 'deskripsi', 'harga', 'passing_grade'];
 
     public function getFormattedHargaAttribute(): string
     {
@@ -27,5 +27,10 @@ class Skema extends Model
     public function pendaftaran()
     {
         return $this->hasMany(Pendaftaran::class);
+    }
+
+    public function soals()
+    {
+        return $this->hasMany(Soal::class);
     }
 }

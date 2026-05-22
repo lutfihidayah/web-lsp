@@ -3,16 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pendaftaran;
-use App\Http\Controllers\User\PembayaranController;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class MidtransWebhookController extends Controller
 {
-    public function handle(Request $request)
+    public function handle(Request $request, PaymentService $paymentService)
     {
-        $serverKey   = config('midtrans.server_key');
-        $hashed      = hash('sha512',
+        $serverKey = config('midtrans.server_key');
+
+        // SECURITY: Tolak request jika server key belum dikonfigurasi.
+        // Tanpa pengecekan ini, hash dengan key kosong bisa dimanipulasi.
+        if (empty($serverKey)) {
+            Log::critical('Midtrans webhook: MIDTRANS_SERVER_KEY is not configured. Rejecting request.');
+            return response()->json(['message' => 'Server configuration error'], 500);
+        }
+
+        $hashed = hash('sha512',
             $request->order_id .
             $request->status_code .
             $request->gross_amount .
@@ -46,14 +54,14 @@ class MidtransWebhookController extends Controller
 
         if ($transactionStatus === 'capture') {
             if ($fraudStatus === 'accept') {
-                PembayaranController::handlePaymentSuccess($pendaftaran, [
+                $paymentService->handlePaymentSuccess($pendaftaran, [
                     'payment_type' => $request->payment_type,
                 ]);
             } else {
                 $pendaftaran->update(['status' => 'failed']);
             }
         } elseif ($transactionStatus === 'settlement') {
-            PembayaranController::handlePaymentSuccess($pendaftaran, [
+            $paymentService->handlePaymentSuccess($pendaftaran, [
                 'payment_type' => $request->payment_type,
             ]);
         } elseif (in_array($transactionStatus, ['cancel', 'deny'])) {

@@ -42,11 +42,14 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        // Tambahkan pengecekan status 'aktif' agar user yang dinonaktifkan admin tidak bisa login.
+        $credentials = array_merge($this->only('email', 'password'), ['status' => 'aktif']);
+
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => __('Kredensial yang Anda masukkan salah, atau akun Anda telah dinonaktifkan. Hubungi administrator.'),
             ]);
         }
 
