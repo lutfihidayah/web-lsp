@@ -38,7 +38,7 @@ Route::get('/sertifikasi/{id}', function ($id) {
 })->name('guest.skema.show');
 
 // Daftar Informasi Publik
-Route::get('/informasi', function () {
+Route::get('/berita', function () {
     $informasi = \App\Models\Informasi::where('status', 'Dipublikasikan')->latest()->get();
     return view('informasi-list', compact('informasi'));
 })->name('guest.informasi.index');
