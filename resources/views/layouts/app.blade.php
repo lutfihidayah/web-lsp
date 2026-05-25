@@ -27,7 +27,7 @@
 @php $role = auth()->user()->role; @endphp
 
 {{-- SIDEBAR --}}
-<aside class="w-64 min-h-screen bg-[#1e3a6e] text-white flex flex-col fixed left-0 top-0" style="background: linear-gradient(180deg, #1a3366 0%, #1e3a6e 100%);">
+<aside class="w-64 h-screen bg-[#1e3a6e] text-white flex flex-col fixed left-0 top-0 overflow-y-auto" style="background: linear-gradient(180deg, #1a3366 0%, #1e3a6e 100%);">
     <div class="p-6 border-b border-blue-800">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center flex-shrink-0">
