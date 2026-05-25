@@ -40,14 +40,63 @@
     </div>
     <div class="flex items-center gap-3">
         @auth
-            <span class="text-sm text-gray-600 hidden sm:inline">Halo, <span class="font-bold text-[#1e3a6e]">{{ auth()->user()->name }}</span></span>
-            <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('user.dashboard') }}" class="px-5 py-2 bg-[#1e3a6e] text-white rounded-lg text-sm font-medium hover:bg-[#16305c] transition-all">
-                Dashboard
-            </a>
-        @else
+            <div x-data="{ open: false }" class="relative">
+                <!-- Trigger Button -->
+                <button @click="open = !open" class="flex items-center gap-2 focus:outline-none rounded-full p-0.5 transition-all">
+                    <span class="text-sm text-gray-600 hidden sm:inline">Halo, <span class="font-bold text-[#1e3a6e]">{{ auth()->user()->name }}</span></span>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1e3a6e] to-blue-500 text-white flex items-center justify-center font-bold text-base shadow-md">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                    <svg class="w-4 h-4 text-gray-600 hidden sm:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div x-show="open" 
+                     @click.away="open = false"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="transform opacity-0 scale-95"
+                     x-transition:enter-end="transform opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="transform opacity-100 scale-100"
+                     x-transition:leave-end="transform opacity-0 scale-95"
+                     class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 origin-top-right"
+                     style="display: none;">
+                    
+                    <!-- User Info Header -->
+                    <div class="px-4 py-3 border-b border-gray-50 text-left">
+                        <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Sudah Masuk Sebagai</p>
+                        <p class="text-sm font-bold text-gray-900 truncate mt-0.5">{{ auth()->user()->name }}</p>
+                        <p class="text-xs text-gray-500 truncate mt-0.5">{{ auth()->user()->email }}</p>
+                    </div>
+
+                    <!-- Links -->
+                    <div class="p-1">
+                        <a href="{{ route('dashboard') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-xl transition-all text-left">
+                            <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                            </svg>
+                            Dashboard
+                        </a>
+                        
+                        <form method="POST" action="{{ route('logout') }}" class="block">
+                            @csrf
+                            <button type="submit" class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-all text-left">
+                                <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endauth
+        @guest
             <a href="{{ route('login') }}" class="px-5 py-2 border border-[#1e3a6e] text-[#1e3a6e] rounded-lg text-sm font-medium hover:bg-gray-50">Masuk</a>
             <a href="{{ route('register') }}" class="px-5 py-2 bg-[#1e3a6e] text-white rounded-lg text-sm font-medium hover:bg-[#16305c]">Daftar</a>
-        @endauth
+        @endguest
     </div>
 </nav>
 
@@ -71,14 +120,15 @@
         </p>
         <div class="flex flex-col sm:flex-row items-center gap-4">
             @auth
-                <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('user.dashboard') }}" class="w-full sm:w-auto px-10 py-4 bg-[#1e3a6e] text-white font-bold rounded-xl hover:bg-[#16305c] shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-1 text-center">
+                <a href="{{ route('dashboard') }}" class="w-full sm:w-auto px-10 py-4 bg-[#1e3a6e] text-white font-bold rounded-xl hover:bg-[#16305c] shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-1 text-center">
                     Buka Dashboard
                 </a>
-            @else
+            @endauth
+            @guest
                 <a href="{{ route('register') }}" class="w-full sm:w-auto px-10 py-4 bg-[#1e3a6e] text-white font-bold rounded-xl hover:bg-[#16305c] shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-1 text-center">
                     Daftar Sertifikasi
                 </a>
-            @endauth
+            @endguest
             <a href="#skema" class="w-full sm:w-auto px-10 py-4 bg-white text-[#1e3a6e] font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all text-center">
                 Lihat Skema
             </a>
