@@ -17,6 +17,10 @@ use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 
 // =====================
+// LANJUTKAN SETTING VPS
+// =====================
+
+// =====================
 // LANDING PAGE (PUBLIK)
 // =====================
 Route::get('/', function () {
