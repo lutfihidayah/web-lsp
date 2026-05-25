@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informasi & Berita Terbaru | LSP Profesional</title>
+    <title>{{ $info->judul }} | LSP Profesional</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -91,89 +91,92 @@
 <main class="flex-1 py-12 px-8 md:px-20 max-w-6xl mx-auto w-full">
     
     <div class="mb-8">
-        <a href="/" class="flex items-center gap-2 text-sm text-gray-500 hover:text-[#1e3a6e] transition inline-flex">
+        <a href="{{ route('guest.informasi.index') }}" class="flex items-center gap-2 text-sm text-gray-500 hover:text-[#1e3a6e] transition inline-flex">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <polyline points="15 18 9 12 15 6"/>
             </svg>
-            Kembali ke Beranda
+            Kembali ke Semua Berita
         </a>
     </div>
 
-    <div class="text-center mb-12">
-        <span class="px-4 py-1 bg-orange-50 text-orange-700 rounded-full text-xs font-bold uppercase tracking-widest">Pusat Informasi</span>
-        <h1 class="text-4xl font-extrabold mt-4 mb-3 text-gray-900">Kumpulan Informasi & Berita</h1>
-        <p class="text-gray-500 max-w-xl mx-auto">Dapatkan pengumuman terbaru, tips asesmen, dan berita menarik seputar kegiatan sertifikasi kami.</p>
-    </div>
-
-    {{-- FILTER & SEARCH --}}
-    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-10 flex flex-col md:flex-row gap-4 items-center justify-between">
-        <!-- Search Input -->
-        <div class="relative w-full md:w-80">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-            </span>
-            <input type="text" id="info-search" placeholder="Cari informasi atau berita..." class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all outline-none">
-        </div>
-
-        <!-- Category Filter Buttons -->
-        <div class="flex flex-wrap gap-2 w-full md:w-auto" id="filter-container">
-            <button onclick="filterCategory('all')" class="category-btn active px-4 py-2 text-xs font-bold rounded-lg bg-[#1e3a6e] text-white transition-all">Semua</button>
-            @php
-                $categories = $informasi->pluck('kategori')->unique();
-            @endphp
-            @foreach($categories as $category)
-                <button onclick="filterCategory('{{ $category }}')" class="category-btn px-4 py-2 text-xs font-bold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all">{{ $category }}</button>
-            @endforeach
-        </div>
-    </div>
-
-    {{-- GRID LIST --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="info-grid">
-        @if($informasi->isEmpty())
-            <div class="col-span-3 text-center py-12 bg-white rounded-2xl border border-gray-100">
-                <p class="text-gray-500">Belum ada informasi terbaru saat ini.</p>
+    <div class="flex flex-col lg:flex-row gap-10">
+        
+        {{-- NEWS DETAIL --}}
+        <article class="w-full lg:w-8/12 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden p-8 md:p-10">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-orange-50 text-orange-600 uppercase tracking-wider">
+                    {{ $info->kategori }}
+                </span>
+                <span class="text-xs text-gray-400 font-medium">{{ \Carbon\Carbon::parse($info->created_at)->format('d M Y') }}</span>
+                <span class="text-xs text-gray-400 font-medium flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Dilihat {{ $info->dilihat ?? 0 }} kali
+                </span>
             </div>
-        @else
-            @foreach($informasi as $info)
-            <div class="info-card group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300" data-kategori="{{ $info->kategori }}" data-judul="{{ strtolower($info->judul) }}" data-isi="{{ strtolower($info->isi) }}">
-                <div class="relative h-52 overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-br from-[#1e3a6e] to-blue-500 opacity-90 group-hover:scale-110 transition-transform duration-500"></div>
-                    <div class="absolute inset-0 flex items-center justify-center text-white">
-                        <svg class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15"></path>
-                        </svg>
-                    </div>
+
+            <h1 class="text-3xl font-extrabold text-gray-900 leading-tight mb-6">
+                {{ $info->judul }}
+            </h1>
+
+            <div class="flex items-center gap-3 pb-6 border-b border-gray-100 mb-8">
+                <div class="w-9 h-9 rounded-full bg-[#1e3a6e] text-white flex items-center justify-center font-bold text-sm">
+                    {{ substr($info->penulis ?? 'A', 0, 1) }}
                 </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-orange-50 text-orange-600 uppercase tracking-widest">
-                            {{ $info->kategori }}
-                        </span>
-                        <p class="text-xs text-gray-400 font-medium">{{ \Carbon\Carbon::parse($info->created_at)->format('d M Y') }}</p>
-                    </div>
-                    <h3 class="font-bold text-lg mb-3 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors info-title">{{ $info->judul }}</h3>
-                    <p class="text-gray-500 text-sm mb-6 line-clamp-3 leading-relaxed">{{ $info->isi }}</p>
-                    <a href="{{ route('guest.informasi.show', $info->id) }}" class="inline-flex items-center gap-2 text-[#1e3a6e] text-sm font-bold group-hover:gap-3 transition-all">
-                        Baca Selengkapnya 
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                <div>
+                    <p class="text-sm font-bold text-gray-900">{{ $info->penulis ?? 'Admin LSP' }}</p>
+                    <p class="text-xs text-gray-400">Penulis Resmi LSP</p>
+                </div>
+            </div>
+
+            {{-- CONTENT --}}
+            <div class="prose max-w-none text-gray-600 leading-relaxed text-base space-y-6">
+                {!! nl2br(e($info->isi)) !!}
+            </div>
+        </article>
+
+        {{-- SIDEBAR: LATEST NEWS --}}
+        <aside class="w-full lg:w-4/12 space-y-6">
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                <h3 class="font-bold text-lg text-gray-900 pb-4 border-b border-gray-100 mb-6 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15" />
+                    </svg>
+                    Berita Lainnya
+                </h3>
+
+                <div class="space-y-6">
+                    @if($beritaLainnya->isEmpty())
+                        <p class="text-sm text-gray-500">Tidak ada berita terbaru lainnya.</p>
+                    @else
+                        @foreach($beritaLainnya as $item)
+                            <div class="group flex flex-col gap-2">
+                                <span class="text-[10px] font-bold text-orange-600 uppercase tracking-widest">{{ $item->kategori }}</span>
+                                <h4 class="font-bold text-sm text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                                    <a href="{{ route('guest.informasi.show', $item->id) }}">{{ $item->judul }}</a>
+                                </h4>
+                                <span class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+
+            {{-- BOX HUBUNGI KAMI --}}
+            <div class="bg-[#1e3a6e] rounded-3xl p-6 text-white relative overflow-hidden shadow-lg shadow-blue-900/10">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl"></div>
+                <div class="relative z-10">
+                    <h4 class="font-bold text-lg mb-2">Butuh Bantuan?</h4>
+                    <p class="text-xs text-blue-200 leading-relaxed mb-4">Hubungi tim admin LSP untuk pertanyaan seputar sertifikasi dan pelaksanaan ujian.</p>
+                    <a href="/#kontak" class="inline-block w-full py-3 bg-white text-[#1e3a6e] text-center rounded-xl text-xs font-bold hover:bg-gray-50 transition">
+                        Hubungi Kontak Kami
                     </a>
                 </div>
             </div>
-            @endforeach
-        @endif
-    </div>
+        </aside>
 
-    <!-- Empty State for Search -->
-    <div id="no-results" class="hidden text-center py-16 bg-white rounded-2xl border border-gray-100">
-        <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
-            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-        </div>
-        <h3 class="font-bold text-lg text-gray-900">Informasi Tidak Ditemukan</h3>
-        <p class="text-gray-500 mt-1">Coba gunakan kata kunci pencarian yang lain.</p>
     </div>
 
 </main>
@@ -211,61 +214,6 @@
         © {{ date('Y') }} LSP Profesional. All rights reserved. Terakreditasi BNSP.
     </div>
 </footer>
-
-<script>
-    let activeCategory = 'all';
-
-    function filterCategory(category) {
-        activeCategory = category;
-        
-        // Update button states
-        const buttons = document.querySelectorAll('#filter-container button');
-        buttons.forEach(btn => {
-            btn.classList.remove('bg-[#1e3a6e]', 'text-white', 'category-btn', 'active');
-            btn.classList.add('bg-gray-100', 'text-gray-600', 'hover:bg-gray-200');
-        });
-
-        const clickedBtn = event.currentTarget;
-        clickedBtn.classList.remove('bg-gray-100', 'text-gray-600', 'hover:bg-gray-200');
-        clickedBtn.classList.add('bg-[#1e3a6e]', 'text-white', 'category-btn', 'active');
-
-        applyFilters();
-    }
-
-    document.getElementById('info-search').addEventListener('input', function() {
-        applyFilters();
-    });
-
-    function applyFilters() {
-        const searchQuery = document.getElementById('info-search').value.toLowerCase();
-        const cards = document.querySelectorAll('.info-card');
-        let visibleCount = 0;
-
-        cards.forEach(card => {
-            const cardCategory = card.getAttribute('data-kategori');
-            const cardJudul = card.getAttribute('data-judul');
-            const cardIsi = card.getAttribute('data-isi');
-
-            const matchesCategory = (activeCategory === 'all' || cardCategory === activeCategory);
-            const matchesSearch = cardJudul.includes(searchQuery) || cardIsi.includes(searchQuery);
-
-            if (matchesCategory && matchesSearch) {
-                card.style.display = 'block';
-                visibleCount++;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        const noResults = document.getElementById('no-results');
-
-        if (visibleCount === 0) {
-            noResults.classList.remove('hidden');
-        } else {
-            noResults.classList.add('hidden');
-        }
-    }
-</script>
 
 </body>
 </html>

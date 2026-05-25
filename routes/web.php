@@ -43,6 +43,20 @@ Route::get('/berita', function () {
     return view('informasi-list', compact('informasi'));
 })->name('guest.informasi.index');
 
+// Detail Informasi Publik
+Route::get('/berita/{id}', function ($id) {
+    $info = \App\Models\Informasi::where('status', 'Dipublikasikan')->findOrFail($id);
+    $info->increment('dilihat');
+
+    $beritaLainnya = \App\Models\Informasi::where('status', 'Dipublikasikan')
+        ->where('id', '!=', $id)
+        ->latest()
+        ->take(3)
+        ->get();
+
+    return view('informasi-detail', compact('info', 'beritaLainnya'));
+})->name('guest.informasi.show');
+
 // =====================
 // SEMUA USER LOGIN
 // =====================

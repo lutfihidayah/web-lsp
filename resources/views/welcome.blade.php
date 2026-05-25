@@ -321,7 +321,7 @@
                     </div>
                     <h3 class="font-bold text-lg mb-3 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors">{{ $info->judul }}</h3>
                     <p class="text-gray-500 text-sm mb-6 line-clamp-3 leading-relaxed">{{ $info->isi }}</p>
-                    <a href="#" class="inline-flex items-center gap-2 text-[#1e3a6e] text-sm font-bold group-hover:gap-3 transition-all">
+                    <a href="{{ route('guest.informasi.show', $info->id) }}" class="inline-flex items-center gap-2 text-[#1e3a6e] text-sm font-bold group-hover:gap-3 transition-all">
                         Baca Selengkapnya 
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </a>
