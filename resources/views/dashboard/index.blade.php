@@ -56,7 +56,7 @@
 {{-- CHARTS --}}
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     <div class="md:col-span-2 bg-white rounded-xl p-6 border border-gray-200">
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
             <h3 class="font-bold text-gray-800">Trend Pendaftaran Peserta</h3>
             <span class="text-xs text-gray-400">6 Bulan Terakhir</span>
         </div>
@@ -111,11 +111,11 @@
     </div>
 
     <div class="bg-white rounded-xl p-6 border border-gray-200">
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
             <h3 class="font-bold text-gray-800">Daftar Peserta Terbaru</h3>
             <a href="{{ route('peserta.index') }}" class="text-xs text-[#1e3a6e] font-medium">See All →</a>
         </div>
-        <table class="w-full text-sm">
+        <table class="w-full text-sm min-w-[800px]">
             <thead>
                 <tr class="text-gray-400 text-xs border-b border-gray-100">
                     <th class="text-left pb-3">Nama</th>
@@ -205,19 +205,19 @@ new Chart(document.getElementById('statusChart'), {
 </div>
 @endif
 
-<div class="bg-white rounded-2xl p-6 mb-6 flex items-center justify-between shadow-sm border border-gray-100">
+<div class="bg-white rounded-2xl p-4 sm:p-6 mb-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-sm border border-gray-100">
     <div>
-        <h2 class="text-2xl font-bold text-gray-900">Hallo, {{ auth()->user()->name }}!</h2>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900">Hallo, {{ auth()->user()->name }}!</h2>
         <p class="text-gray-500 text-sm mt-1">Selamat datang kembali di Dashboard Sertifikasi.</p>
     </div>
-    <div class="flex items-center gap-4">
-        <div class="bg-[#1e3a6e] text-white rounded-xl px-5 py-4 text-center min-w-[140px]">
-            <p class="text-xs font-semibold text-blue-200 leading-tight">Skema Sedang<br>di Ikuti</p>
-            <p class="text-2xl font-bold mt-2">{{ $skemaCount }}</p>
+    <div class="flex items-center gap-3 md:gap-4 w-full lg:w-auto">
+        <div class="flex-1 lg:flex-none bg-[#1e3a6e] text-white rounded-xl px-3 md:px-5 py-4 text-center min-w-[120px] md:min-w-[140px]">
+            <p class="text-[10px] md:text-xs font-semibold text-blue-200 leading-tight">Skema Sedang<br>di Ikuti</p>
+            <p class="text-xl md:text-2xl font-bold mt-2">{{ $skemaCount }}</p>
         </div>
-        <div class="bg-[#1e3a6e] text-white rounded-xl px-5 py-4 text-center min-w-[140px]">
-            <p class="text-xs font-semibold text-blue-200 leading-tight">Sertifikat<br>Kompeten</p>
-            <p class="text-2xl font-bold mt-2">{{ $kompeten }}</p>
+        <div class="flex-1 lg:flex-none bg-[#1e3a6e] text-white rounded-xl px-3 md:px-5 py-4 text-center min-w-[120px] md:min-w-[140px]">
+            <p class="text-[10px] md:text-xs font-semibold text-blue-200 leading-tight">Sertifikat<br>Kompeten</p>
+            <p class="text-xl md:text-2xl font-bold mt-2">{{ $kompeten }}</p>
         </div>
     </div>
 </div>

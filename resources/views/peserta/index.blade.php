@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Daftar Peserta')
 @section('page-title', 'Daftar Peserta')
@@ -8,12 +8,12 @@
 <div class="bg-white rounded-xl border border-gray-200 p-6">
 
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
             <h2 class="font-bold text-gray-800 text-lg">Data Peserta Sertifikasi</h2>
             <p class="text-sm text-gray-400">Total {{ $peserta->count() }} peserta terdaftar</p>
         </div>
-        <div class="flex items-center gap-2 no-print">
+        <div class="flex flex-wrap items-center gap-2 no-print w-full sm:w-auto mt-2 sm:mt-0">
             <div class="relative group">
                 <button type="button" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition flex items-center gap-2">
                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -44,34 +44,35 @@
 </div>
 @endif
     {{-- Filter & Search --}}
-    <div class="flex items-center gap-4 mb-6 no-print">
-        <div class="relative flex-1 max-w-sm">
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-6 no-print w-full">
+        <div class="relative flex-1 sm:max-w-sm w-full">
             <input type="text" placeholder="Cari nama peserta..."
                 class="w-full pl-9 pr-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]">
             <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
         </div>
-        <select class="px-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] text-gray-600">
-            <option>Semua Status</option>
-            <option>Kompeten</option>
-            <option>Belum Kompeten</option>
-            <option>Dalam Proses</option>
-            <option>Verifikasi</option>
-            <option>Asesmen</option>
-        </select>
-        <select class="px-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] text-gray-600">
-            <option>Semua Skema</option>
-            <option>Junior Web Developer</option>
-            <option>Network Administrator</option>
-            <option>Digital Marketing</option>
-            <option>Data Analyst</option>
-        </select>
+        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <select class="px-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] text-gray-600 w-full sm:w-auto">
+                <option>Semua Status</option>
+                <option>Kompeten</option>
+                <option>Belum Kompeten</option>
+                <option>Dalam Proses</option>
+                <option>Verifikasi</option>
+            </select>
+            <select class="px-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] text-gray-600 w-full sm:w-auto">
+                <option>Semua Skema</option>
+                <option>Junior Web Developer</option>
+                <option>Network Administrator</option>
+                <option>Digital Marketing</option>
+                <option>Data Analyst</option>
+            </select>
+        </div>
     </div>
 
     {{-- Table --}}
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+    <div class="overflow-x-auto w-full">
+        <table class="w-full text-sm min-w-[800px]">
             <thead>
                 <tr class="border-b border-gray-100 text-gray-400 text-xs">
                     <th class="text-left pb-3 font-medium">ID ↕</th>

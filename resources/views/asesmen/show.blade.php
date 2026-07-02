@@ -49,7 +49,7 @@
 
 {{-- Absensi --}}
 <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
         <h3 class="font-bold text-gray-900 flex items-center gap-2">
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#1e3a6e" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
             Absensi ({{ $asesmen->absensi->where('dikonfirmasi_oleh', 'admin')->count() }}/10 dikonfirmasi)
@@ -71,8 +71,8 @@
         @endif
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+    <div class="overflow-x-auto w-full">
+        <table class="w-full text-sm min-w-[800px]">
             <thead>
                 <tr class="border-b border-gray-100 text-gray-400 text-xs">
                     <th class="text-left pb-3 font-medium">Pertemuan</th>
@@ -129,8 +129,8 @@
         <span class="{{ $asesmen->nilai_quiz >= 60 ? 'text-green-600' : 'text-red-600' }}">{{ $asesmen->nilai_quiz }}%</span>
     </h3>
 
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+    <div class="overflow-x-auto w-full">
+        <table class="w-full text-sm min-w-[800px]">
             <thead>
                 <tr class="border-b border-gray-100 text-gray-400 text-xs">
                     <th class="text-left pb-3 font-medium">No</th>

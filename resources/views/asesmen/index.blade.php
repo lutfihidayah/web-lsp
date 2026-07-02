@@ -24,14 +24,14 @@
 </div>
 
 <div class="bg-white rounded-xl border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-6 no-print">
-        <form method="GET" class="flex items-center gap-4">
-            <div class="relative flex-1 max-w-sm">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 no-print">
+        <form method="GET" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
+            <div class="relative flex-1 sm:max-w-sm w-full">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama peserta..."
                     class="w-full pl-9 pr-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]">
                 <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             </div>
-            <select name="status" class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600" onchange="this.form.submit()">
+            <select name="status" class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 w-full sm:w-auto" onchange="this.form.submit()">
                 <option value="">Semua Status</option>
                 <option value="berlangsung" {{ request('status') == 'berlangsung' ? 'selected' : '' }}>Berlangsung</option>
                 <option value="lulus" {{ request('status') == 'lulus' ? 'selected' : '' }}>Lulus</option>
@@ -49,8 +49,8 @@
         </div>
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+    <div class="overflow-x-auto w-full">
+        <table class="w-full text-sm min-w-[800px]">
             <thead>
                 <tr class="border-b border-gray-100 text-gray-400 text-xs">
                     <th class="text-left pb-3 font-medium">No</th>

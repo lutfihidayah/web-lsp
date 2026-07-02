@@ -22,12 +22,15 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 flex">
+<body class="bg-gray-100 flex" x-data="{ sidebarOpen: false }">
 
 @php $role = auth()->user()->role; @endphp
 
+<!-- Mobile Overlay -->
+<div x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-30 md:hidden" style="display:none;" x-transition></div>
+
 {{-- SIDEBAR --}}
-<aside class="w-64 h-screen bg-[#1e3a6e] text-white flex flex-col fixed left-0 top-0 overflow-y-auto" style="background: linear-gradient(180deg, #1a3366 0%, #1e3a6e 100%);">
+<aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="w-64 h-screen bg-[#1e3a6e] text-white flex flex-col fixed left-0 top-0 overflow-y-auto transform md:translate-x-0 transition-transform duration-300 z-40" style="background: linear-gradient(180deg, #1a3366 0%, #1e3a6e 100%);">
     <div class="p-6 border-b border-blue-800">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center flex-shrink-0">
@@ -240,33 +243,40 @@
 </aside>
 
 {{-- MAIN CONTENT --}}
-<div class="ml-64 flex-1 min-h-screen flex flex-col">
+<div class="md:ml-64 flex-1 min-h-screen flex flex-col w-full transition-all duration-300">
 
     {{-- TOPBAR --}}
-    <header class="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between sticky top-0 z-10">
-        <div>
-            <p class="text-xs text-gray-400">Pages / <span class="text-gray-600">@yield('page-title', 'Dashboard')</span></p>
-            <h1 class="text-lg font-bold text-gray-800">@yield('page-title', 'Dashboard')</h1>
+    <header class="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex items-center justify-between sticky top-0 z-10 w-full">
+        <div class="flex items-center gap-3">
+            <button @click="sidebarOpen = true" class="md:hidden p-1 text-gray-500 rounded-md hover:bg-gray-100 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <div>
+                <p class="text-[10px] md:text-xs text-gray-400 mb-0.5">Pages / <span class="text-gray-600">@yield('page-title', 'Dashboard')</span></p>
+                <h1 class="text-base md:text-lg font-bold text-gray-800 leading-tight">@yield('page-title', 'Dashboard')</h1>
+            </div>
         </div>
-        <div class="flex items-center gap-4">
-            <div class="relative">
+        <div class="flex items-center gap-3 md:gap-4">
+            <div class="relative hidden sm:block">
                 <input type="text" placeholder="Search..."
-                    class="pl-9 pr-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] w-64">
+                    class="pl-9 pr-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] w-48 md:w-64">
                 <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
                 </svg>
             </div>
             <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-[#1e3a6e] rounded-full flex items-center justify-center text-white text-xs font-bold">
+                <div class="w-8 h-8 bg-[#1e3a6e] rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">
                     {{ substr(auth()->user()->name, 0, 1) }}
                 </div>
-                <span class="text-sm font-medium text-gray-700">{{ auth()->user()->name }}</span>
+                <span class="text-sm font-medium text-gray-700 hidden sm:inline">{{ auth()->user()->name }}</span>
             </div>
         </div>
     </header>
 
     {{-- FLASH MESSAGES --}}
-    <div class="px-8 pt-4">
+    <div class="px-4 md:px-8 pt-4">
         @if(session('success'))
             <div class="bg-green-50 border border-green-200 text-green-800 rounded-lg px-4 py-3 text-sm mb-4 flex items-center gap-2">
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -287,7 +297,7 @@
     </div>
 
     {{-- PAGE CONTENT --}}
-    <main class="px-8 pb-8 pt-4 flex-1">
+    <main class="px-4 md:px-8 pb-8 pt-4 flex-1 max-w-full">
         @yield('content')
     </main>
 

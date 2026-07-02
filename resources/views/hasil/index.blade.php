@@ -8,7 +8,7 @@
 {{-- ========== TAMPILAN ADMIN: TABLE SEMUA PESERTA ========== --}}
 
 <div class="bg-white rounded-xl border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
             <h2 class="font-bold text-gray-800 text-lg">Hasil Sertifikasi (Otomatis)</h2>
             <p class="text-sm text-gray-400">Total {{ $asesmens->count() }} peserta terdaftar · Data diperbarui otomatis</p>
@@ -42,8 +42,8 @@
         </div>
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+    <div class="overflow-x-auto w-full">
+        <table class="w-full text-sm min-w-[800px]">
             <thead>
                 <tr class="border-b border-gray-100 text-gray-400 text-xs">
                     <th class="text-left pb-3 font-medium">No</th>
@@ -146,8 +146,8 @@
             </a>
         </div>
     @else
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+    <div class="overflow-x-auto w-full">
+        <table class="w-full text-sm min-w-[800px]">
             <thead>
                 <tr class="border-b border-gray-100 text-gray-400 text-xs">
                     <th class="text-left pb-3 font-medium">Skema</th>

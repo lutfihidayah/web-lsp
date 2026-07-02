@@ -101,7 +101,7 @@
 
         {{-- Item Table --}}
         <div class="mb-8">
-            <table class="w-full">
+            <table class="w-full min-w-[800px]">
                 <thead>
                     <tr class="border-b-2 border-gray-100">
                         <th class="text-left pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Deskripsi</th>

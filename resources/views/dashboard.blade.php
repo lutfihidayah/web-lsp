@@ -64,8 +64,8 @@
 
 {{-- CHARTS --}}
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-    <div class="md:col-span-2 bg-white rounded-xl p-6 border border-gray-200">
-        <div class="flex items-center justify-between mb-4">
+    <div class="md:col-span-2 bg-white rounded-xl p-4 sm:p-6 border border-gray-200 min-w-0 overflow-hidden">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
             <h3 class="font-bold text-gray-800">Trend Pendaftaran Peserta</h3>
             <select class="text-xs border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none">
                 <option>Weekly</option>
@@ -75,7 +75,7 @@
         <canvas id="trendChart" height="100"></canvas>
     </div>
 
-    <div class="bg-white rounded-xl p-6 border border-gray-200">
+    <div class="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 min-w-0 overflow-hidden">
         <h3 class="font-bold text-gray-800 mb-4">Status Kompetensi</h3>
         <canvas id="statusChart" height="200"></canvas>
         <div class="space-y-2 mt-4">
@@ -97,7 +97,7 @@
 
 {{-- BOTTOM --}}
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="bg-white rounded-xl p-6 border border-gray-200">
+    <div class="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 min-w-0 overflow-hidden">
         <h3 class="font-bold text-gray-800 mb-4">Berita Sertifikasi</h3>
         <div class="space-y-3">
             @foreach(['Sertifikasi BNSP Siap Kerja', 'Mampu Bersaing di Gelobal', 'Hasilkan Generasi Kompeten'] as $berita)
@@ -120,12 +120,13 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-xl p-6 border border-gray-200">
-        <div class="flex items-center justify-between mb-4">
+    <div class="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 min-w-0 overflow-hidden">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
             <h3 class="font-bold text-gray-800">Daftar Peserta Terbaru</h3>
-            <a href="{{ route('admin.peserta') }}" class="text-xs text-[#1e3a6e] font-medium">See All →</a>
+            <a href="{{ route('peserta.index') }}" class="text-xs text-[#1e3a6e] font-medium shrink-0">See All →</a>
         </div>
-        <table class="w-full text-sm">
+        <div class="overflow-x-auto w-full">
+            <table class="w-full text-sm min-w-[500px]">
             <thead>
                 <tr class="text-gray-400 text-xs border-b border-gray-100">
                     <th class="text-left pb-3">ID</th>
@@ -158,6 +159,7 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

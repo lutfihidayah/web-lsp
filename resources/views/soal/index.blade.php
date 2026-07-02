@@ -92,8 +92,8 @@
         </form>
 
         {{-- TABLE DETAIL SOAL --}}
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+        <div class="overflow-x-auto w-full">
+            <table class="w-full text-sm min-w-[800px]">
                 <thead>
                     <tr class="border-b border-gray-100 text-gray-400 text-xs">
                         <th class="text-left pb-3 font-medium w-12">No</th>

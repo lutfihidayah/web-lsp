@@ -147,7 +147,7 @@
                     </div>
                 </div>
                 <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
                         <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-orange-50 text-orange-600 uppercase tracking-widest">
                             {{ $info->kategori }}
                         </span>

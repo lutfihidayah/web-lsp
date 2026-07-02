@@ -5,7 +5,7 @@
 @section('content')
 
 {{-- Header --}}
-<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
     <div>
         <h2 class="text-xl font-bold text-gray-900">User Management</h2>
         <p class="text-sm text-gray-500 mt-1">Kelola semua akun pengguna dan administrator</p>
@@ -93,7 +93,7 @@
 
 {{-- Tabel --}}
 <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-    <table class="w-full text-sm">
+    <table class="w-full text-sm min-w-[800px]">
         <thead class="bg-gray-50 border-b border-gray-100">
             <tr class="text-gray-400 text-xs">
                 <th class="text-left px-6 py-3 font-medium">Nama / Email</th>

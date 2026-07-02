@@ -186,12 +186,12 @@
     <div class="bg-white rounded-xl border border-gray-200 p-6">
         
         {{-- Header Tabel --}}
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
                 <h2 class="font-bold text-gray-800 text-lg">Pratinjau Laporan</h2>
                 <p class="text-sm text-gray-400">Menampilkan {{ $data->count() }} baris data</p>
             </div>
-            <div class="flex items-center gap-2 no-print">
+            <div class="flex flex-wrap items-center gap-2 no-print w-full sm:w-auto mt-2 sm:mt-0">
                 <button type="button" onclick="exportPDF()" class="px-4 py-2 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition flex items-center gap-2">
                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     Cetak PDF / Print
@@ -204,8 +204,8 @@
         </div>
 
         {{-- Table Element --}}
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+        <div class="overflow-x-auto w-full">
+            <table class="w-full text-sm min-w-[800px]">
                 
                 @if($type === 'peserta')
                     <thead>

@@ -8,12 +8,12 @@
 <div class="bg-white rounded-xl border border-gray-200 p-6">
 
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
             <h2 class="font-bold text-gray-800 text-lg">Jadwal Asesmen</h2>
             <p class="text-sm text-gray-400">Total {{ $jadwals->count() }} jadwal</p>
         </div>
-        <div class="flex items-center gap-2 no-print">
+        <div class="flex flex-wrap items-center gap-2 no-print w-full sm:w-auto mt-2 sm:mt-0">
             <div class="relative group">
                 <button type="button" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition flex items-center gap-2">
                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -45,8 +45,8 @@
     @endif
 
     {{-- Table --}}
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+    <div class="overflow-x-auto w-full">
+        <table class="w-full text-sm min-w-[800px]">
             <thead>
                 <tr class="border-b border-gray-100 text-gray-400 text-xs">
                     <th class="text-left pb-3 font-medium">No</th>
