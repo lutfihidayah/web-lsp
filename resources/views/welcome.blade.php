@@ -28,23 +28,24 @@
 <body class="bg-white text-gray-800">
 
 {{-- NAVBAR --}}
-<nav class="fixed top-0 left-0 right-0 z-50 glass px-8 py-4 flex items-center justify-between">
+<nav x-data="{ mobileMenuOpen: false }" class="fixed top-0 left-0 right-0 z-50 glass px-5 md:px-8 py-4 flex items-center justify-between">
     <a href="/" class="text-[#1e3a6e] font-extrabold text-2xl tracking-tight">LSP<span class="text-orange-500">PRO</span></a>
+    
     <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-        <a href="#beranda" class="hover:text-[#1e3a6e]">Beranda</a>
-        <a href="#tentang" class="hover:text-[#1e3a6e]">Tentang LSP</a>
-        <a href="#skema" class="hover:text-[#1e3a6e]">Skema</a>
-        <a href="#alur" class="hover:text-[#1e3a6e]">Alur</a>
-        <a href="#informasi" class="hover:text-[#1e3a6e]">Informasi</a>
-        <a href="#kontak" class="hover:text-[#1e3a6e]">Kontak</a>
+        <a href="#beranda" class="hover:text-[#1e3a6e] transition-colors">Beranda</a>
+        <a href="#tentang" class="hover:text-[#1e3a6e] transition-colors">Tentang LSP</a>
+        <a href="#skema" class="hover:text-[#1e3a6e] transition-colors">Skema</a>
+        <a href="#alur" class="hover:text-[#1e3a6e] transition-colors">Alur</a>
+        <a href="#informasi" class="hover:text-[#1e3a6e] transition-colors">Informasi</a>
+        <a href="#kontak" class="hover:text-[#1e3a6e] transition-colors">Kontak</a>
     </div>
+
     <div class="flex items-center gap-3">
         @auth
             <div x-data="{ open: false }" class="relative">
-                <!-- Trigger Button -->
                 <button @click="open = !open" class="flex items-center gap-2 focus:outline-none rounded-full p-0.5 transition-all">
                     <span class="text-sm text-gray-600 hidden sm:inline">Halo, <span class="font-bold text-[#1e3a6e]">{{ auth()->user()->name }}</span></span>
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1e3a6e] to-blue-500 text-white flex items-center justify-center font-bold text-base shadow-md">
+                    <div class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-gradient-to-tr from-[#1e3a6e] to-blue-500 text-white flex items-center justify-center font-bold text-base shadow-md">
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
                     <svg class="w-4 h-4 text-gray-600 hidden sm:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,7 +53,6 @@
                     </svg>
                 </button>
 
-                <!-- Dropdown Menu -->
                 <div x-show="open" 
                      @click.away="open = false"
                      x-transition:enter="transition ease-out duration-200"
@@ -64,14 +64,12 @@
                      class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 origin-top-right"
                      style="display: none;">
                     
-                    <!-- User Info Header -->
                     <div class="px-4 py-3 border-b border-gray-50 text-left">
-                        <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Sudah Masuk Sebagai</p>
+                        <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Masuk Sebagai</p>
                         <p class="text-sm font-bold text-gray-900 truncate mt-0.5">{{ auth()->user()->name }}</p>
                         <p class="text-xs text-gray-500 truncate mt-0.5">{{ auth()->user()->email }}</p>
                     </div>
 
-                    <!-- Links -->
                     <div class="p-1">
                         <a href="{{ route('dashboard') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-xl transition-all text-left">
                             <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -94,14 +92,50 @@
             </div>
         @endauth
         @guest
-            <a href="{{ route('login') }}" class="px-5 py-2 border border-[#1e3a6e] text-[#1e3a6e] rounded-lg text-sm font-medium hover:bg-gray-50">Masuk</a>
-            <a href="{{ route('register') }}" class="px-5 py-2 bg-[#1e3a6e] text-white rounded-lg text-sm font-medium hover:bg-[#16305c]">Daftar</a>
+            <div class="hidden md:flex items-center gap-2">
+                <a href="{{ route('login') }}" class="px-5 py-2.5 border border-[#1e3a6e] text-[#1e3a6e] rounded-xl text-sm font-bold hover:bg-gray-50 transition-all">Masuk</a>
+                <a href="{{ route('register') }}" class="px-5 py-2.5 bg-[#1e3a6e] text-white rounded-xl text-sm font-bold hover:bg-[#16305c] transition-all">Daftar</a>
+            </div>
+        @endguest
+
+        <!-- Mobile Menu Toggle Button -->
+        <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-gray-600 focus:outline-none hover:bg-gray-100 rounded-lg transition-colors">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" style="display: none;"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div x-show="mobileMenuOpen" 
+         @click.away="mobileMenuOpen = false"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="transform opacity-0 -translate-y-4"
+         x-transition:enter-end="transform opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="transform opacity-100 translate-y-0"
+         x-transition:leave-end="transform opacity-0 -translate-y-4"
+         class="absolute top-[100%] left-0 right-0 bg-white border-t border-gray-100 shadow-xl p-5 flex flex-col gap-4 md:hidden z-40"
+         style="display: none;">
+        
+        <a href="#beranda" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Beranda</a>
+        <a href="#tentang" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Tentang LSP</a>
+        <a href="#skema" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Skema</a>
+        <a href="#alur" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Alur</a>
+        <a href="#informasi" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Informasi</a>
+        <a href="#kontak" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Kontak</a>
+        
+        @guest
+            <hr class="border-gray-100 my-2">
+            <a href="{{ route('login') }}" class="w-full text-center px-5 py-3 border-2 border-[#1e3a6e] text-[#1e3a6e] rounded-xl text-base font-bold transition-all">Masuk</a>
+            <a href="{{ route('register') }}" class="w-full text-center px-5 py-3 bg-[#1e3a6e] text-white rounded-xl text-base font-bold transition-all mt-2">Daftar</a>
         @endguest
     </div>
 </nav>
 
 {{-- HERO --}}
-<section id="beranda" class="pt-32 pb-24 px-8 md:px-20 flex flex-col md:flex-row items-center justify-between gap-12 hero-gradient">
+<section id="beranda" class="pt-28 md:pt-32 pb-16 md:pb-24 px-5 md:px-20 flex flex-col md:flex-row items-center justify-between gap-12 hero-gradient">
     <div class="max-w-2xl">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-6">
             <span class="relative flex h-2 w-2">
@@ -110,7 +144,7 @@
             </span>
             Terakreditasi BNSP Resmi
         </div>
-        <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 leading-[1.1] mb-6">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.1] md:leading-[1.1] mb-6">
             Raih Sertifikasi <br> 
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#1e3a6e] to-blue-600">Kompetensi Profesional</span> <br>
             Sekarang Juga
@@ -137,18 +171,18 @@
     <div class="relative">
         <div class="absolute -top-10 -left-10 w-40 h-40 bg-orange-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
         <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div class="relative w-80 h-80 md:w-[450px] md:h-[450px] rounded-3xl overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
+        <div class="relative w-64 h-64 sm:w-72 sm:h-72 md:w-[450px] md:h-[450px] rounded-3xl overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500 mx-auto">
             <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1974&auto=format&fit=crop" alt="Professional Certification" class="w-full h-full object-cover">
         </div>
     </div>
 </section>
 
 {{-- TENTANG LSP --}}
-<section id="tentang" class="py-24 px-8 md:px-20 bg-gray-50">
+<section id="tentang" class="py-16 md:py-24 px-5 md:px-20 bg-gray-50">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-16 items-center">
         <div class="w-full md:w-1/2 relative">
             <div class="absolute -z-10 top-4 -left-4 w-full h-full border-2 border-orange-200 rounded-2xl"></div>
-            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="LSP Office" class="rounded-2xl shadow-xl w-full h-[400px] object-cover">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="LSP Office" class="rounded-2xl shadow-xl w-full h-[250px] md:h-[400px] object-cover">
             <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg hidden md:block">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 text-xl">🏆</div>
@@ -185,7 +219,7 @@
 </section>
 
 {{-- SKEMA SERTIFIKASI --}}
-<section id="skema" class="py-20 px-8 md:px-20">
+<section id="skema" class="py-16 md:py-20 px-5 md:px-20">
     <div class="text-center mb-12">
         <span class="px-4 py-1 border border-gray-300 rounded-full text-sm text-gray-500">Skema Sertifikasi</span>
         <h2 class="text-3xl font-bold mt-4">Pilih Skema Sertifikasi Sesuai Kebutuhan</h2>
@@ -233,7 +267,7 @@
 </section>
 
 {{-- ALUR SERTIFIKASI --}}
-<section id="alur" class="py-24 px-8 md:px-20 bg-white">
+<section id="alur" class="py-16 md:py-24 px-5 md:px-20 bg-white">
     <div class="text-center mb-16">
         <span class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4">Proses Kerja</span>
         <h2 class="text-4xl font-bold text-gray-900 mb-4">Alur Sertifikasi Profesional</h2>
@@ -290,7 +324,7 @@
 </section>
 
 {{-- INFORMASI --}}
-<section id="informasi" class="py-20 px-8 md:px-20">
+<section id="informasi" class="py-16 md:py-20 px-5 md:px-20">
     <div class="text-center mb-12">
         <span class="px-4 py-1 border border-gray-300 rounded-full text-sm text-gray-500">Informasi</span>
         <h2 class="text-3xl font-bold mt-4">Informasi Terbaru</h2>
@@ -336,7 +370,7 @@
 </section>
 
 {{-- KONTAK --}}
-<section id="kontak" class="py-24 px-8 md:px-20 bg-gray-50/50">
+<section id="kontak" class="py-16 md:py-24 px-5 md:px-20 bg-gray-50/50">
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-16">
             <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4">Hubungi Kami</span>
@@ -426,7 +460,7 @@
 </section>
 
 {{-- FOOTER --}}
-<footer class="bg-[#1e3a6e] text-white py-12 px-8 md:px-20">
+<footer class="bg-[#1e3a6e] text-white py-12 px-5 md:px-20">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
         <div>
             <h3 class="font-bold text-lg mb-3">LSP <span class="text-orange-400">Profesional</span></h3>
