@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard') - LSP Profesional</title>
+    <title>@yield('title', 'Dashboard') - Sertify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -32,17 +32,10 @@
 {{-- SIDEBAR --}}
 <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="w-64 h-screen bg-[#1e3a6e] text-white flex flex-col fixed left-0 top-0 overflow-y-auto transform md:translate-x-0 transition-transform duration-300 z-40" style="background: linear-gradient(180deg, #1a3366 0%, #1e3a6e 100%);">
     <div class="p-6 border-b border-blue-800">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center flex-shrink-0">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="#1e3a6e">
-                    <rect x="1" y="1" width="6" height="6" rx="1"/>
-                    <rect x="9" y="1" width="6" height="6" rx="1"/>
-                    <rect x="1" y="9" width="6" height="6" rx="1"/>
-                    <rect x="9" y="9" width="6" height="6" rx="1"/>
-                </svg>
-            </div>
-            <span class="font-bold text-lg">LSP Profesional</span>
-        </div>
+        <a href="/" class="flex items-center gap-3">
+            <img src="{{ asset('images/logo.png') }}" alt="Sertify Logo" class="h-8">
+            <span class="font-bold text-lg">Sertify</span>
+        </a>
         <div class="mt-2">
             <span class="text-xs px-2 py-0.5 rounded-full font-semibold {{ in_array($role, ['admin', 'superadmin', 'asesor']) ? 'bg-yellow-400 text-yellow-900' : 'bg-blue-300 text-blue-900' }}">
                 {{ strtoupper($role) }}
@@ -266,6 +259,7 @@
                     <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
                 </svg>
             </div>
+
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-[#1e3a6e] rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">
                     {{ substr(auth()->user()->name, 0, 1) }}

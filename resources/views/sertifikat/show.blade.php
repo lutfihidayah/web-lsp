@@ -14,7 +14,7 @@
 <div class="bg-white rounded-2xl border-2 border-[#1e3a6e] overflow-hidden shadow-lg max-w-3xl mx-auto" id="sertifikat">
     <div class="bg-gradient-to-r from-[#1e3a6e] to-[#2a5298] text-white p-8 text-center">
         <p class="text-sm uppercase tracking-widest text-blue-200 mb-2">Lembaga Sertifikasi Profesi</p>
-        <h1 class="text-3xl font-bold">LSP <span class="text-orange-400">Profesional</span></h1>
+        <h1 class="text-3xl font-bold">Sertify</h1>
         <p class="text-blue-200 text-sm mt-1">Terakreditasi BNSP</p>
     </div>
 
@@ -48,7 +48,7 @@
     </div>
 
     <div class="bg-gray-50 px-8 py-4 flex items-center justify-between text-xs text-gray-400">
-        <span>&copy; {{ date('Y') }} LSP Profesional</span>
+        <span>&copy; {{ date('Y') }} Sertify</span>
         <span>ID: {{ $asesmen->no_sertifikat }}</span>
     </div>
 </div>

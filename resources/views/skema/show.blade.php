@@ -59,7 +59,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div class="bg-blue-50 rounded-xl p-4">
                 <p class="text-xs text-blue-500 font-medium mb-1">Lokasi</p>
-                <p class="text-sm font-bold text-gray-800">Gedung LSP</p>
+                <p class="text-sm font-bold text-gray-800">Gedung Sertify</p>
             </div>
             <div class="bg-green-50 rounded-xl p-4">
                 <p class="text-xs text-green-500 font-medium mb-1">Total Peserta</p>

@@ -169,7 +169,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1.5">Penulis</label>
-                        <input type="text" name="penulis" value="{{ old('penulis', 'Admin LSP') }}"
+                        <input type="text" name="penulis" value="{{ old('penulis', 'Admin Sertify') }}"
                             class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a6e]">
                     </div>
                 </div>

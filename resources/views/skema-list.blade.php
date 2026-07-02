@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Skema Sertifikasi | LSP Profesional</title>
+    <title>Daftar Skema Sertifikasi | Sertify</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,10 +16,10 @@
 
 {{-- NAVBAR --}}
 <nav class="bg-white shadow-sm px-8 py-4 flex items-center justify-between">
-    <a href="/" class="text-[#1e3a6e] font-bold text-xl">LSP <span class="text-orange-400">Profesional</span></a>
+    <a href="/" class="text-[#1e3a6e] font-bold text-xl">Sertify</a>
     <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
         <a href="/#beranda" class="hover:text-[#1e3a6e]">Beranda</a>
-        <a href="/#tentang" class="hover:text-[#1e3a6e]">Tentang LSP</a>
+        <a href="/#tentang" class="hover:text-[#1e3a6e]">Tentang Sertify</a>
         <a href="/#skema" class="hover:text-[#1e3a6e]">Skema</a>
         <a href="/#alur" class="hover:text-[#1e3a6e]">Alur</a>
         <a href="/#informasi" class="hover:text-[#1e3a6e]">Informasi</a>
@@ -184,7 +184,7 @@
 <footer class="bg-[#1e3a6e] text-white py-12 px-8 md:px-20 mt-auto">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 max-w-6xl mx-auto w-full">
         <div>
-            <h3 class="font-bold text-lg mb-3">LSP <span class="text-orange-400">Profesional</span></h3>
+            <h3 class="font-bold text-lg mb-3">Sertify</h3>
             <p class="text-sm text-blue-200">Lembaga Sertifikasi Profesi terakreditasi BNSP yang berkomitmen membangun tenaga profesional berkualitas standar global.</p>
         </div>
         <div>
@@ -210,7 +210,7 @@
         </div>
     </div>
     <div class="border-t border-blue-800 pt-6 text-center text-sm text-blue-300 max-w-6xl mx-auto w-full">
-        © {{ date('Y') }} LSP Profesional. All rights reserved. Terakreditasi BNSP.
+        © {{ date('Y') }} Sertify. All rights reserved. Terakreditasi BNSP.
     </div>
 </footer>
 

@@ -41,12 +41,12 @@
                         </svg>
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold">LSP Profesional</h1>
+                        <h1 class="text-xl font-bold">Sertify</h1>
                         <p class="text-blue-200 text-xs">Lembaga Sertifikasi Profesi</p>
                     </div>
                 </div>
                 <p class="text-blue-200 text-xs">Jl. Profesional No. 1, Indonesia</p>
-                <p class="text-blue-200 text-xs">info@lspprofesional.id | +62 21 1234 5678</p>
+                <p class="text-blue-200 text-xs">info@sertify.id | +62 21 1234 5678</p>
             </div>
             <div class="text-right">
                 <p class="text-blue-200 text-xs font-medium uppercase tracking-widest mb-1">Invoice</p>
@@ -179,8 +179,8 @@
         {{-- Footer Note --}}
         <div class="border-t border-gray-100 pt-6">
             <p class="text-xs text-gray-400 text-center">
-                Invoice ini diterbitkan secara otomatis oleh sistem LSP Profesional. Simpan invoice ini sebagai bukti pembayaran yang sah.<br>
-                Jika ada pertanyaan, hubungi kami di <strong>info@lspprofesional.id</strong>
+                Invoice ini diterbitkan secara otomatis oleh sistem Sertify. Simpan invoice ini sebagai bukti pembayaran yang sah.<br>
+                Jika ada pertanyaan, hubungi kami di <strong>info@sertify.id</strong>
             </p>
         </div>
     </div>

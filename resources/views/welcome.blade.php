@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LSP Profesional - Sertifikasi Kompetensi Terpercaya</title>
+    <title>Sertify - Sertifikasi Kompetensi Terpercaya</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,11 +29,13 @@
 
 {{-- NAVBAR --}}
 <nav x-data="{ mobileMenuOpen: false }" class="fixed top-0 left-0 right-0 z-50 glass px-5 md:px-8 py-4 flex items-center justify-between">
-    <a href="/" class="text-[#1e3a6e] font-extrabold text-2xl tracking-tight">LSP<span class="text-orange-500">PRO</span></a>
+    <a href="/" class="flex items-center gap-2 text-[#1e3a6e] font-extrabold text-2xl tracking-tight">
+        <img src="{{ asset('images/logo.png') }}" alt="Sertify Logo" class="h-10">
+    </a>
     
     <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
         <a href="#beranda" class="hover:text-[#1e3a6e] transition-colors">Beranda</a>
-        <a href="#tentang" class="hover:text-[#1e3a6e] transition-colors">Tentang LSP</a>
+        <a href="#tentang" class="hover:text-[#1e3a6e] transition-colors">Tentang Sertify</a>
         <a href="#skema" class="hover:text-[#1e3a6e] transition-colors">Skema</a>
         <a href="#alur" class="hover:text-[#1e3a6e] transition-colors">Alur</a>
         <a href="#informasi" class="hover:text-[#1e3a6e] transition-colors">Informasi</a>
@@ -120,7 +122,7 @@
          style="display: none;">
         
         <a href="#beranda" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Beranda</a>
-        <a href="#tentang" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Tentang LSP</a>
+        <a href="#tentang" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Tentang Sertify</a>
         <a href="#skema" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Skema</a>
         <a href="#alur" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Alur</a>
         <a href="#informasi" @click="mobileMenuOpen = false" class="text-gray-700 hover:text-[#1e3a6e] font-semibold text-base py-2">Informasi</a>
@@ -328,7 +330,7 @@
     <div class="text-center mb-12">
         <span class="px-4 py-1 border border-gray-300 rounded-full text-sm text-gray-500">Informasi</span>
         <h2 class="text-3xl font-bold mt-4">Informasi Terbaru</h2>
-        <p class="text-gray-500 mt-2">Dapatkan informasi terkini seputar kegiatan dan pengumuman dari LSP kami.</p>
+        <p class="text-gray-500 mt-2">Dapatkan informasi terkini seputar kegiatan dan pengumuman dari Sertify.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
         @if($informasi->isEmpty())
@@ -409,7 +411,7 @@
                             </div>
                             <div>
                                 <p class="text-blue-200 text-xs font-bold uppercase tracking-wider mb-1">Email Resmi</p>
-                                <p class="text-lg">info@lspprofesional.id</p>
+                                <p class="text-lg">info@sertify.id</p>
                             </div>
                         </div>
                         <div class="flex items-start gap-5">
@@ -463,7 +465,7 @@
 <footer class="bg-[#1e3a6e] text-white py-12 px-5 md:px-20">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
         <div>
-            <h3 class="font-bold text-lg mb-3">LSP <span class="text-orange-400">Profesional</span></h3>
+            <h3 class="font-bold text-lg mb-3">Sertify</h3>
             <p class="text-sm text-blue-200">Lembaga Sertifikasi Profesi terakreditasi BNSP yang berkomitmen membangun tenaga profesional berkualitas standar global.</p>
         </div>
         <div>
@@ -494,7 +496,7 @@
         </div>
     </div>
     <div class="border-t border-blue-800 pt-6 text-center text-sm text-blue-300">
-        © 2025 LSP Profesional. All rights reserved. Terakreditasi BNSP.
+        © 2025 Sertify. All rights reserved. Terakreditasi BNSP.
     </div>
 </footer>
 
