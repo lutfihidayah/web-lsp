@@ -30,7 +30,7 @@
 {{-- NAVBAR --}}
 <nav x-data="{ mobileMenuOpen: false }" class="fixed top-0 left-0 right-0 z-50 glass px-5 md:px-8 py-4 flex items-center justify-between">
     <a href="/" class="flex items-center gap-2 text-[#1e3a6e] font-extrabold text-2xl tracking-tight">
-        <img src="{{ asset('images/logo.png') }}" alt="Sertify Logo" class="h-10">
+        <img src="/images/logo.png" alt="Sertify Logo" class="h-10">
     </a>
     
     <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">

@@ -33,7 +33,7 @@
 <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="w-64 h-screen bg-[#1e3a6e] text-white flex flex-col fixed left-0 top-0 overflow-y-auto transform md:translate-x-0 transition-transform duration-300 z-40" style="background: linear-gradient(180deg, #1a3366 0%, #1e3a6e 100%);">
     <div class="p-6 border-b border-blue-800">
         <a href="/" class="flex items-center gap-3">
-            <img src="{{ asset('images/logo.png') }}" alt="Sertify Logo" class="h-8">
+            <img src="/images/logo.png" alt="Sertify Logo" class="h-8">
             <span class="font-bold text-lg">Sertify</span>
         </a>
         <div class="mt-2">
